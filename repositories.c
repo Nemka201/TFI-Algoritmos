@@ -94,7 +94,7 @@ Pedido* buscarPedidosPorMesa(const char* nombreArchivo, int idMesa, int* numPedi
 }
 
 // Función para calcular el total de un pedido
-float calcularTotalPedido(const char* nombreArchivo, int idPedido, int numDetalles) {
+float calcularTotalPedido(const char* nombreArchivo, int idPedido, int* numDetalles) {
     DetallePedido* detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
     float total = 0.0;
 

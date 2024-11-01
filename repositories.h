@@ -45,6 +45,7 @@ int modificarMesa(const char* nombreArchivo, int id, Mesa nuevaMesa);
 int eliminarMesa(const char* nombreArchivo, int id);
 
 // Prototipos de funciones para Pedidos
+
 void guardarPedidos(const char* nombreArchivo, Pedido* pedidos, int numPedidos);
 Pedido* cargarPedidos(const char* nombreArchivo, int* numPedidos);
 Pedido buscarPedidoPorId(const char* nombreArchivo, int id);
@@ -53,10 +54,12 @@ int modificarPedido(const char* nombreArchivo, int id, Pedido nuevoPedido);
 int eliminarPedido(const char* nombreArchivo, int id);
 
 // Funciones específicas para pedidos
-Pedido* buscarPedidosPorMesa(const char* nombreArchivo, int idMesa); // Busca todos los pedidos de una mesa
-float calcularTotalPedido(const char* nombreArchivo, int idPedido); // Calcula el total de un pedido
+
+Pedido* buscarPedidosPorMesa(const char* nombreArchivo, int idMesa, int* numPedidos); // Busca todos los pedidos de una mesa
+float calcularTotalPedido(const char* nombreArchivo, int idPedido, int* numPedidos); // Calcula el total de un pedido
 
 // Prototipos de funciones para Productos
+
 void guardarProductos(const char* nombreArchivo, Producto* productos, int numProductos);
 Producto* cargarProductos(const char* nombreArchivo, int* numProductos);
 Producto buscarProductoPorId(const char* nombreArchivo, int id);
@@ -65,9 +68,11 @@ int modificarProducto(const char* nombreArchivo, int id, Producto nuevoProducto)
 int eliminarProducto(const char* nombreArchivo, int id);
 
 // Funciones específicas para productos
+
 Producto* buscarProductosPorCategoria(const char* nombreArchivo, const char* categoria); // Busca todos los productos de una categoría
 
 // Prototipos de funciones para Detalles de Pedidos
+
 void guardarDetallesPedidos(const char* nombreArchivo, DetallePedido* detalles, int numDetalles);
 DetallePedido* cargarDetallesPedidos(const char* nombreArchivo, int* numDetalles);
 DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido);
@@ -76,6 +81,7 @@ int modificarDetallePedido(const char* nombreArchivo, int id, DetallePedido nuev
 int eliminarDetallePedido(const char* nombreArchivo, int id);
 
 // Funciones auxiliares
+
 int encontrarIndiceLibre(const char* nombreArchivo, int tamEstructura); // Encuentra el siguiente ID disponible
 void imprimirMesa(Mesa mesa); // Imprime los datos de una mesa en pantalla
 

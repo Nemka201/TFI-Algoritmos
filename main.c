@@ -1,6 +1,16 @@
-#include "repositories.h"
 #include <stdio.h>
+#include "repositories.h"
+#include "mesa-servicio.h"
 
+void mostrarMenu();
+void mostrarMenuMesas();
+void accionMostrarDisponibilidad();
+void accionReservarMesa();
+void accionLiberarMesa();
+void accionAgregarMesa();
+void accionBuscarMesaPorId();
+void inputMenuMesas();
+void MainMenu();
 
 int main() {
     int i;
@@ -17,7 +27,7 @@ void MainMenu() {
         printf("1. Opcion 1\n");
         printf("2. Opcion 2\n");
         printf("3. Opcion 3\n");
-        printf("4. Opcion 4\n");
+        printf("4. Gestion de mesas\n");
         printf("5. Salir\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
@@ -36,8 +46,7 @@ void MainMenu() {
                 printf("Has seleccionado la opcion 3\n");
                 break;
             case 4:
-                // Código para la opción 4
-                printf("Has seleccionado la opcion 4\n");
+                inputMenuMesas();
                 break;
             case 5:
                 printf("Saliendo del programa...\n");
@@ -46,4 +55,43 @@ void MainMenu() {
                 printf("Opcion invalida. Por favor, ingrese un numero entre 1 y 5.\n");
         }
     } while (opcion != 5);
+}
+
+// Función selector del menu Mesas
+void inputMenuMesas() {
+    int opcion;
+
+    do {
+        mostrarMenuMesas();
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                accionMostrarDisponibilidad();
+                break;
+
+            case 2:
+                accionReservarMesa();
+                break;
+
+            case 3:
+                accionLiberarMesa();
+                break;
+
+            case 4:
+                accionAgregarMesa();
+                break;
+
+            case 5:
+                accionBuscarMesaPorId();
+                break;
+
+            case 6:
+                printf("Saliendo...\n");
+                break;
+
+            default:
+                printf("Opción no válida. Intente de nuevo.\n");
+        }
+    } while (opcion != 6);
 }

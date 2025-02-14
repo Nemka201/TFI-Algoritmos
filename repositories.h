@@ -3,13 +3,14 @@
 
 #include <stdio.h>
 #include <string.h>
-
+#include <stdbool.h>
+#include <stdlib.h>
 // Definición del struct Mesa
 typedef struct Mesa {
     int id;
     int capacidad;
     char ubicacion[50];
-    char estado[20]; 
+    bool disponible;
 }Mesa;
 // Definición del struct Pedido
 typedef struct Pedido {

@@ -20,5 +20,7 @@ void accionReservarMesa();
 void accionLiberarMesa();
 void accionAgregarMesa();
 void accionBuscarMesaPorId();
+void mostrarMenu();
+void mostrarMenuMesas();
 
 #endif

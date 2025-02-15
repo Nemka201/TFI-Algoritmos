@@ -35,6 +35,7 @@ typedef struct DetallePedido {
     struct Pedido pedido; 
     struct Producto producto; 
     int cantidad;
+    double subTotalProducto;
 }DetallePedido;
 
 // Prototipos de funciones para Mesas

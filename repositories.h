@@ -49,7 +49,7 @@ int eliminarMesa(const char* nombreArchivo, int id);
 
 // Prototipos de funciones para Pedidos
 
-void guardarPedidos(const char* nombreArchivo, Pedido* pedidos, int numPedidos);
+int guardarPedidos(const char* nombreArchivo, Pedido* pedidos, int numPedidos);
 Pedido* cargarPedidos(const char* nombreArchivo, int* numPedidos);
 Pedido buscarPedidoPorId(const char* nombreArchivo, int id);
 int agregarPedido(const char* nombreArchivo, Pedido nuevoPedido);

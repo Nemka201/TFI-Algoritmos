@@ -70,7 +70,7 @@ Producto* buscarProductosPorCategoria(const char* nombreArchivo, const char* cat
 
 // Prototipos de funciones para Detalles de Pedidos
 
-void guardarDetallesPedidos(const char* nombreArchivo, DetallePedido* detalles, int numDetalles);
+int guardarDetallesPedidos(const char* nombreArchivo, DetallePedido* detalles, int numDetalles);
 DetallePedido* cargarDetallesPedidos(const char* nombreArchivo, int* numDetalles);
 DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido);
 int agregarDetallePedido(const char* nombreArchivo, DetallePedido nuevoDetalle);

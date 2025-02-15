@@ -87,7 +87,7 @@ void modificarProductoMenu()
         printf("Producto no encontrado\n");
         return;
     }
-
+    while (getchar() != '\n'); // Limpiar buffer después de scanf
     // Copiar los datos del producto actual al nuevo producto
     nuevoProducto = productoActual;
     printf("Ingrese los nuevos datos del producto:\n");
@@ -97,11 +97,6 @@ void modificarProductoMenu()
     nuevoProducto.nombre[strcspn(nuevoProducto.nombre, "\n")] = '\0';
 
     printf("Descripcion: ");
-    // Descartar el resto de la línea, incluyendo el salto de línea pendiente
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-
     fgets(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), stdin);
     nuevoProducto.descripcion[strcspn(nuevoProducto.descripcion, "\n")] = '\0';
 

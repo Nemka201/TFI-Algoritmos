@@ -357,19 +357,37 @@ Producto* buscarProductosPorCategoria(const char* nombreArchivo, const char* cat
     // Detalle - Pedidos //
 
 // Función para guardar los detalles de un pedido en un archivo binario
-void guardarDetallesPedidos(const char* nombreArchivo, DetallePedido* detalles, int numDetalles) {
+int guardarDetallesPedidos(const char* nombreArchivo, DetallePedido* detalles, int numDetalles) {
     FILE* fp = fopen(nombreArchivo, "wb");
     if (fp == NULL) {
         perror("Error al abrir el archivo");
-        return;
+        return 0;  // Indicar error
     }
 
-    // Escribir un encabezado con el número de detalles para facilitar la carga posterior
-    fwrite(&numDetalles, sizeof(int), 1, fp);
-    fwrite(detalles, sizeof(DetallePedido), numDetalles, fp);
+    if (detalles == NULL || numDetalles <= 0) {
+        printf("No hay detalles para guardar.\n");
+        fclose(fp);
+        return 0;
+    }
+
+    // Escribir el número de detalles
+    if (fwrite(&numDetalles, sizeof(int), 1, fp) != 1) {
+        perror("Error al escribir el número de detalles");
+        fclose(fp);
+        return 0;
+    }
+
+    // Escribir los detalles en el archivo
+    if (fwrite(detalles, sizeof(DetallePedido), numDetalles, fp) != (size_t)numDetalles) {
+        perror("Error al escribir los detalles");
+        fclose(fp);
+        return 0;
+    }
 
     fclose(fp);
+    return 1;  // Indicar éxito
 }
+
 
 // Función para buscar los detalles de un pedido específico
 DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido) {
@@ -394,12 +412,18 @@ DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido) 
 int agregarDetallePedido(const char* nombreArchivo, DetallePedido nuevoDetalle) {
     int numDetalles;
     DetallePedido* detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
+    
+    if (detalles == NULL) {
+        numDetalles = 0; // Si no hay detalles cargados, inicializamos el número de detalles en 0
+    }
 
     // Realizar una copia de los detalles existentes para evitar modificar el arreglo original
     DetallePedido* nuevosDetalles = (DetallePedido*)realloc(detalles, (numDetalles + 1) * sizeof(DetallePedido));
     if (nuevosDetalles == NULL) {
         perror("Error al realocar memoria");
-        free(detalles);
+        if (detalles != NULL) {
+            free(detalles); // Solo liberar si ya existían detalles
+        }
         return 0; // Indicar error
     }
 
@@ -408,11 +432,15 @@ int agregarDetallePedido(const char* nombreArchivo, DetallePedido nuevoDetalle) 
     numDetalles++;
 
     // Guardar los detalles actualizados
-    guardarDetallesPedidos(nombreArchivo, nuevosDetalles, numDetalles);
+    if (!guardarDetallesPedidos(nombreArchivo, nuevosDetalles, numDetalles)) {
+        free(nuevosDetalles);
+        return 0; // Indicar error si no se pudo guardar
+    }
 
     free(nuevosDetalles);
     return 1; // Indicar éxito
 }
+
 
 // Función para modificar un detalle de pedido existente
 int modificarDetallePedido(const char* nombreArchivo, int id, DetallePedido nuevoDetalle) {

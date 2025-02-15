@@ -371,23 +371,6 @@ void guardarDetallesPedidos(const char* nombreArchivo, DetallePedido* detalles, 
     fclose(fp);
 }
 
-// Función para cargar los detalles de todos los pedidos desde un archivo binario
-// DetallePedido* cargarDetallesPedidos(const char* nombreArchivo, int* numDetalles) {
-//     FILE* fp = fopen(nombreArchivo, "rb");
-//     if (fp == NULL) {
-//         perror("Error al abrir el archivo");
-//         return NULL;
-//     }
-
-//     // Leer el número de detalles del encabezado
-//     fread(numDetalles, sizeof(int), 1, fp);
-
-//     DetallePedido* detalles = (DetallePedido*)malloc(*numDetalles * sizeof(DetallePedido));
-//     fread(detalles, sizeof(DetallePedido), *numDetalles, fp);
-//     fclose(fp);
-//     return detalles;
-// }
-
 // Función para buscar los detalles de un pedido específico
 DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido) {
     int numDetalles;

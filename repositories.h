@@ -5,21 +5,22 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
-// Definición del struct Mesa
+
+    // STRUCTS //
 typedef struct Mesa {
     int id;
     int capacidad;
     char ubicacion[50];
     bool disponible;
 }Mesa;
-// Definición del struct Pedido
+
 typedef struct Pedido {
     int id;
     struct Mesa mesa; 
     char fechaHora[30]; 
     char estado[20]; 
 }Pedido;
-// Definición del struct Producto
+
 typedef struct Producto {
     int id;
     char nombre[50];
@@ -28,7 +29,7 @@ typedef struct Producto {
     char categoria[20]; 
     int stock;
 }Producto;
-// Definición del struct DetallePedido
+
 typedef struct DetallePedido {
     int id;
     struct Pedido pedido; 
@@ -53,23 +54,17 @@ Pedido buscarPedidoPorId(const char* nombreArchivo, int id);
 int agregarPedido(const char* nombreArchivo, Pedido nuevoPedido);
 int modificarPedido(const char* nombreArchivo, int id, Pedido nuevoPedido);
 int eliminarPedido(const char* nombreArchivo, int id);
-
-// Funciones específicas para pedidos
-
 Pedido* buscarPedidosPorMesa(const char* nombreArchivo, int idMesa, int* numPedidos); // Busca todos los pedidos de una mesa
 float calcularTotalPedido(const char* nombreArchivo, int idPedido, int* numPedidos); // Calcula el total de un pedido
 
 // Prototipos de funciones para Productos
 
-void guardarProductos(const char* nombreArchivo, Producto* productos, int numProductos);
+int guardarProductos(const char* nombreArchivo, Producto* productos, int numProductos);
 Producto* cargarProductos(const char* nombreArchivo, int* numProductos);
 Producto buscarProductoPorId(const char* nombreArchivo, int id);
 int agregarProducto(const char* nombreArchivo, Producto nuevoProducto);
 int modificarProducto(const char* nombreArchivo, int id, Producto nuevoProducto);
 int eliminarProducto(const char* nombreArchivo, int id);
-
-// Funciones específicas para productos
-
 Producto* buscarProductosPorCategoria(const char* nombreArchivo, const char* categoria); // Busca todos los productos de una categoría
 
 // Prototipos de funciones para Detalles de Pedidos

@@ -13,19 +13,49 @@ void mostrarMenuPedido() {
     printf("1. Guardar pedido\n");
     printf("2. Buscar pedido\n");
     printf("3. Editar pedido\n");
-    //printf("4. Agregar una nueva mesa\n");
-    //printf("5. Buscar una mesa por ID\n");
     printf("6. Volver\n");
     printf("Seleccione una opcion: ");
+}
+
+int obtenerUltimoIdPedido(const char *nombreArchivo) {
+    FILE *fp = fopen(nombreArchivo, "rb");
+    if (!fp) {
+        return -1; // Si el archivo no existe, empezamos desde 0
+    }
+
+    int numPedidos;
+    if (fread(&numPedidos, sizeof(int), 1, fp) != 1) {
+        fclose(fp);
+        return -1; // Si no se puede leer el número de pedidos, empezamos desde 0
+    }
+
+    if (numPedidos <= 0) {
+        fclose(fp);
+        return -1; // No hay pedidos registrados
+    }
+
+    // Ir al último pedido
+    fseek(fp, sizeof(int) + (numPedidos - 1) * sizeof(Pedido), SEEK_SET);
+
+    Pedido ultimoPedido;
+    if (fread(&ultimoPedido, sizeof(Pedido), 1, fp) != 1) {
+        fclose(fp);
+        return -1; // Si hay un error, asumimos que no hay pedidos válidos
+    }
+
+    fclose(fp);
+    return ultimoPedido.id;
 }
 
 void agregarPedidoMenu() {
     Pedido nuevoPedido;
     getchar();
 
-    // Solicitar ID del pedido
-    printf("Ingrese el ID del pedido: ");
-    scanf("%d", &nuevoPedido.id);
+    // Obtener el último ID registrado
+    int ultimoId = obtenerUltimoIdPedido(FILE_PEDIDO);
+    nuevoPedido.id = (ultimoId == -1) ? 0 : ultimoId + 1;
+
+    printf("ID asignado automáticamente: %d\n", nuevoPedido.id);
 
     // Solicitar ID de la mesa asociada al pedido
     printf("Ingrese el ID de la mesa: ");
@@ -35,32 +65,32 @@ void agregarPedidoMenu() {
     // Buscar la mesa por ID en el archivo binario
     Mesa mesaEncontrada = buscarMesaPorId(FILE_MESAS, idMesa);
     
-    // Verificar si la mesa existe
     if (mesaEncontrada.id == 0) {
         printf("No se encontró ninguna mesa con el ID %d. Pedido no agregado.\n", idMesa);
         return;
     }
-    //Se ocupa la mesa
+
+    // Ocupar la mesa
     reservarMesa(mesaEncontrada.id);
-    // Asignar la mesa encontrada al pedido
     nuevoPedido.mesa = mesaEncontrada;
+    
     getchar();
     printf("Ingrese la fecha y hora del pedido (YYYY-MM-DD HH:MM:SS): ");
     fgets(nuevoPedido.fechaHora, sizeof(nuevoPedido.fechaHora), stdin);
-    nuevoPedido.fechaHora[strcspn(nuevoPedido.fechaHora, "\n")] = 0; // Eliminar el salto de línea
+    nuevoPedido.fechaHora[strcspn(nuevoPedido.fechaHora, "\n")] = 0;
 
     printf("Ingrese el estado del pedido (Ejemplo: 'Pendiente', 'En proceso', 'Completado'): ");
     fgets(nuevoPedido.estado, sizeof(nuevoPedido.estado), stdin);
-    nuevoPedido.estado[strcspn(nuevoPedido.estado, "\n")] = 0; // Eliminar el salto de línea
+    nuevoPedido.estado[strcspn(nuevoPedido.estado, "\n")] = 0;
 
-
-    // Llamar a la función que guarda el pedido en el archivo binario
+    // Guardar el pedido en el archivo binario
     if (agregarPedido(FILE_PEDIDO, nuevoPedido)) {
-        printf("Pedido agregado correctamente.\n");
+        printf("Pedido agregado correctamente con ID %d.\n", nuevoPedido.id);
     } else {
         printf("Error al agregar el pedido.\n");
     }
 }
+
 
 void buscarPedidoMenu(){
     int idPedido;

@@ -275,31 +275,70 @@ int eliminarPedido(const char *nombreArchivo, int id)
 {
     int numPedidos;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
-    if (!pedidos)
-         return 0;
-     int indice = -1;
-     for (int i = 0; i < numPedidos; i++)
-     {
-         if (pedidos[i].id == id)
-         {
-             indice = i;
-             break;
-         }
-     }
-     if (indice == -1)
-     {
-         free(pedidos);
-         return 0;
-     }
-     for (int i = indice; i < numPedidos - 1; i++)
-     {
-         pedidos[i] = pedidos[i + 1];
-     }
-     numPedidos--;
-     int resultado = guardarPedidos(nombreArchivo, pedidos, numPedidos);
-     free(pedidos);
-     return resultado;
- }
+
+    if (!pedidos || numPedidos == 0)  
+    {
+        printf("No hay pedidos registrados.\n");
+        return 0;
+    }
+
+    int indice = -1;
+
+    // Buscar el pedido por ID
+    for (int i = 0; i < numPedidos; i++)
+    {
+        if (pedidos[i].id == id)
+        {
+            indice = i;
+            break;
+        }
+    }
+
+    // Si no se encuentra el pedido, salir
+    if (indice == -1)
+    {
+        printf("Pedido con ID %d no encontrado.\n", id);
+        free(pedidos);
+        return 0;
+    }
+
+    // Desplazar los pedidos hacia la izquierda para sobrescribir el eliminado
+    for (int i = indice; i < numPedidos - 1; i++)
+    {
+        pedidos[i] = pedidos[i + 1];
+    }
+
+    numPedidos--;
+
+    // Si no quedan pedidos, vaciar el archivo y liberar memoria
+    if (numPedidos == 0)
+    {
+        FILE *fp = fopen(nombreArchivo, "wb");
+        if (fp)
+        {
+            fclose(fp);
+        }
+        free(pedidos);
+        printf("El último pedido fue eliminado. Archivo vaciado.\n");
+        return 1;
+    }
+
+    // Redimensionar el array con realloc()
+    Pedido *nuevosPedidos = (Pedido *)realloc(pedidos, numPedidos * sizeof(Pedido));
+
+    if (!nuevosPedidos && numPedidos > 0) 
+    {
+        perror("Error al realocar memoria.");
+        free(pedidos);  
+        return 0;
+    }
+
+    // Guardar el nuevo array en el archivo
+    int resultado = guardarPedidos(nombreArchivo, nuevosPedidos, numPedidos);
+    
+    free(nuevosPedidos);
+    return resultado;
+}
 
  Pedido *buscarPedidosPorMesa(const char *nombreArchivo, int idMesa, int *numPedidos)
  {

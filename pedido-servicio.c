@@ -13,6 +13,8 @@ void mostrarMenuPedido() {
     printf("1. Guardar pedido\n");
     printf("2. Buscar pedido\n");
     printf("3. Editar pedido\n");
+    printf("4. Eliminar pedido\n");
+    //printf("5. Buscar una mesa por ID\n");
     printf("6. Volver\n");
     printf("Seleccione una opcion: ");
 }
@@ -159,5 +161,22 @@ void modificarPedidoMenu()
     else
     {
         printf("No se realizaron cambios en el pedido\n");
+    }
+}
+
+void eliminarPedidoMenu()
+{
+    int id;
+
+    printf("Ingrese el ID del pedido a eliminar: ");
+    scanf("%d", &id);
+
+    if (eliminarPedido(FILE_PEDIDO, id))
+    {
+        printf("Pedido eliminado correctamente.\n");
+    }
+    else
+    {
+        printf("Error: No se pudo eliminar el pedido.\n");
     }
 }

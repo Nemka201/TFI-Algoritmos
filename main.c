@@ -14,7 +14,7 @@ void inputMenuPedido();
 #define MAX_USUARIOS 100
 
 int main() {
-    Usuario usuarios[MAX_USUARIOS];
+    /*Usuario usuarios[MAX_USUARIOS];
     int cantidadUsuarios = cargarUsuarios(usuarios, MAX_USUARIOS);
 
     int loginExitoso = 0;
@@ -32,7 +32,7 @@ int main() {
             guardarUsuarios(usuarios, cantidadUsuarios);
             printf("\n");
         }
-    }
+    }*/
 
     MainMenu();
     return 0;
@@ -175,6 +175,7 @@ void inputMenuPedido()
             break;
 
         case 4:
+            eliminarPedidoMenu();
             break;
 
         case 5:

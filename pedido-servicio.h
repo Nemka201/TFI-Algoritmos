@@ -8,5 +8,6 @@ void mostrarMenuPedido();
 void agregarPedidoMenu();
 void buscarPedidoMenu();
 void modificarPedidoMenu();
+void eliminarPedidoMenu();
 
 #endif

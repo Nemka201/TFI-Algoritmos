@@ -6,7 +6,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-    // STRUCTS //
+/////////////
+// STRUCTS //
+/////////////
+
 typedef struct Mesa {
     int id;
     int capacidad;

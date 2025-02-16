@@ -1,5 +1,7 @@
 #include "repositories.h"
 
+#define ARCHIVO_USUARIOS "Usuarios.dat"
+
 //  MESA //
 
 // Función para guardar un arreglo de mesas en un archivo binario
@@ -725,4 +727,26 @@ int eliminarDetallePedido(const char *nombreArchivo, int id)
 
     free(detalles);
     return 0; // Detalle de pedido no encontrado
+}
+
+// Función para cargar los usuarios desde el archivo binario
+int cargarUsuarios(Usuario usuarios[], int maxUsuarios) {
+    FILE *file = fopen("Usuarios.dat", "rb");
+    if (!file) {
+        return 0; // No hay usuarios guardados, retorno 0
+    }
+    int cantidadUsuarios = fread(usuarios, sizeof(Usuario), maxUsuarios, file);
+    fclose(file);
+    return cantidadUsuarios;
+}
+
+// Función para guardar los usuarios en el archivo binario
+void guardarUsuarios(Usuario usuarios[], int cantidadUsuarios) {
+    FILE *file = fopen("Usuarios.dat", "wb");
+    if (!file) {
+        printf("Error al guardar los usuarios.\n");
+        return;
+    }
+    fwrite(usuarios, sizeof(Usuario), cantidadUsuarios, file);
+    fclose(file);
 }

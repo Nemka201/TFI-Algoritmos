@@ -38,6 +38,13 @@ typedef struct DetallePedido {
     double subTotalProducto;
 }DetallePedido;
 
+typedef struct Usuario{
+    char username[10];
+    char password[10];
+    char nombreCompleto[60];
+} Usuario;
+
+
 // Prototipos de funciones para Mesas
 
 void guardarMesas(const char* nombreArchivo, Mesa* mesas, int numMesas);
@@ -76,6 +83,10 @@ DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido);
 int agregarDetallePedido(const char* nombreArchivo, DetallePedido nuevoDetalle);
 int modificarDetallePedido(const char* nombreArchivo, int id, DetallePedido nuevoDetalle);
 int eliminarDetallePedido(const char* nombreArchivo, int id);
+
+// Funciones para manejar persistencia de usuarios
+int cargarUsuarios(Usuario usuarios[], int maxUsuarios);
+void guardarUsuarios(Usuario usuarios[], int cantidadUsuarios);
 
 // Funciones auxiliares
 

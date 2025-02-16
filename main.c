@@ -3,11 +3,16 @@
 #include "repositories.h"
 #include "mesa-servicio.h"
 #include "producto-servicio.h"
+<<<<<<< Updated upstream
 #include "login-servicio.h"  // Incluir el login
+=======
+#include "pedido-servicio.h"
+>>>>>>> Stashed changes
 
 void MainMenu();
 void inputMenuProductos();
 void inputMenuMesas();
+void inputMenuPedido();
 
 #define MAX_USUARIOS 100
 
@@ -48,6 +53,7 @@ void MainMenu()
         printf("\nMenu Principal\n");
         printf("1. Opcion 1\n");
         printf("2. Opcion 2\n");
+        printf("2. Pedidos\n");
         printf("3. Gestion Productos\n");
         printf("4. Gestion de mesas\n");
         printf("5. Salir\n");
@@ -60,7 +66,12 @@ void MainMenu()
             printf("Has seleccionado la opcion 1\n");
             break;
         case 2:
+<<<<<<< Updated upstream
             printf("Has seleccionado la opcion 2\n");
+=======
+            // Código para la opción 2
+            inputMenuPedido();
+>>>>>>> Stashed changes
             break;
         case 3:
             inputMenuProductos();
@@ -148,3 +159,46 @@ void inputMenuProductos()
         }
     } while (opcion != 6);
 }
+<<<<<<< Updated upstream
+=======
+
+
+// Función selector del menu Pedidos
+void inputMenuPedido()
+{
+    int opcion;
+    do
+    {
+        mostrarMenuPedido();
+        scanf("%d", &opcion);
+
+        switch (opcion)
+        {
+        case 1:
+            agregarPedidoMenu();
+            break;
+
+        case 2:
+            buscarPedidoMenu();
+            break;
+
+        case 3:
+            modificarPedidoMenu();
+            break;
+
+        case 4:
+            break;
+
+        case 5:
+            break;
+
+        case 6:
+            printf("\nVolviendo...\n");
+            break;
+
+        default:
+            printf("Opción no válida. Intente de nuevo.\n");
+        }
+    } while (opcion != 6);
+}
+>>>>>>> Stashed changes

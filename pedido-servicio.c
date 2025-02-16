@@ -14,7 +14,7 @@ void mostrarMenuPedido() {
     printf("2. Buscar pedido\n");
     printf("3. Editar pedido\n");
     printf("4. Eliminar pedido\n");
-    //printf("5. Buscar una mesa por ID\n");
+    printf("5. Buscar pedidios por mesa\n");
     printf("6. Volver\n");
     printf("Seleccione una opcion: ");
 }
@@ -178,5 +178,54 @@ void eliminarPedidoMenu()
     else
     {
         printf("Error: No se pudo eliminar el pedido.\n");
+    }
+}
+
+void buscarPedidosPorMesaMenu()
+{
+    int idMesa;
+    printf("Ingrese el ID de la mesa a consultar: ");
+    scanf("%d", &idMesa);
+
+    int numPedidos;
+    Pedido *pedidosMesa = buscarPedidosPorMesa(FILE_PEDIDO, idMesa, &numPedidos);
+
+    if (pedidosMesa == NULL)
+    {
+        printf("No se encontraron pedidos para la mesa %d.\n", idMesa);
+        return;
+    }
+
+    printf("Pedidos encontrados para la mesa %d:\n", idMesa);
+    for (int i = 0; i < numPedidos; i++)
+    {
+        printf("\n-------------------------------------\n");
+        printf("Pedido encontrado:\n");
+        printf("ID Pedido: %d\n", pedidosMesa[i].id);
+        printf("ID Mesa: %d\n", pedidosMesa[i].mesa.id);
+        printf("Capacidad: %d\n", pedidosMesa[i].mesa.capacidad);
+        printf("Ubicacion: %s\n", pedidosMesa[i].mesa.ubicacion);
+        printf("Disponibilidad: %s\n", pedidosMesa[i].estado);
+        printf("Fecha y hora: %s\n", pedidosMesa[i].fechaHora);
+        printf("-------------------------------------\n");
+    }
+
+    free(pedidosMesa);
+}
+void calcularTotalPedidoMenu()
+{
+    int idPedido;
+    printf("Ingrese el ID del pedido a calcular: ");
+    scanf("%d", &idPedido);
+
+    float total = calcularTotalPedido("detalles_pedido.dat", idPedido);
+
+    if (total > 0.0f)
+    {
+        printf("El total del pedido %d es: %.2f\n", idPedido, total);
+    }
+    else
+    {
+        printf("No se pudo calcular el total del pedido.\n");
     }
 }

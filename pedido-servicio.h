@@ -9,5 +9,6 @@ void agregarPedidoMenu();
 void buscarPedidoMenu();
 void modificarPedidoMenu();
 void eliminarPedidoMenu();
+void buscarPedidosPorMesaMenu();
 
 #endif

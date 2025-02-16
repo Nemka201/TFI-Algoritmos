@@ -3,11 +3,8 @@
 #include "repositories.h"
 #include "mesa-servicio.h"
 #include "producto-servicio.h"
-<<<<<<< Updated upstream
-#include "login-servicio.h"  // Incluir el login
-=======
+#include "login-servicio.h"
 #include "pedido-servicio.h"
->>>>>>> Stashed changes
 
 void MainMenu();
 void inputMenuProductos();
@@ -52,7 +49,6 @@ void MainMenu()
         system("cls");
         printf("\nMenu Principal\n");
         printf("1. Opcion 1\n");
-        printf("2. Opcion 2\n");
         printf("2. Pedidos\n");
         printf("3. Gestion Productos\n");
         printf("4. Gestion de mesas\n");
@@ -66,12 +62,7 @@ void MainMenu()
             printf("Has seleccionado la opcion 1\n");
             break;
         case 2:
-<<<<<<< Updated upstream
-            printf("Has seleccionado la opcion 2\n");
-=======
-            // Código para la opción 2
             inputMenuPedido();
->>>>>>> Stashed changes
             break;
         case 3:
             inputMenuProductos();
@@ -159,9 +150,6 @@ void inputMenuProductos()
         }
     } while (opcion != 6);
 }
-<<<<<<< Updated upstream
-=======
-
 
 // Función selector del menu Pedidos
 void inputMenuPedido()
@@ -201,4 +189,3 @@ void inputMenuPedido()
         }
     } while (opcion != 6);
 }
->>>>>>> Stashed changes

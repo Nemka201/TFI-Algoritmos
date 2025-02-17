@@ -9,6 +9,7 @@
 #define FILE_MESAS "mesas.bin"
 
 void mostrarMenuPedido() {
+    crearArch();
     printf("\n--- Menu de Gestion de Pedidos ---\n");
     printf("1. Guardar pedido\n");
     printf("2. Buscar pedido\n");
@@ -17,6 +18,10 @@ void mostrarMenuPedido() {
     printf("5. Buscar pedidios por mesa\n");
     printf("6. Volver\n");
     printf("Seleccione una opcion: ");
+}
+
+void crearArch(){
+    crearArchivoPedidos();
 }
 
 int obtenerUltimoIdPedido(const char *nombreArchivo) {

@@ -132,6 +132,32 @@ int encontrarIndiceLibre(const char *nombreArchivo, int tamEstructura)
 }
 
 // PEDIDOS //
+#include <stdio.h>
+
+void crearArchivoPedidos()
+{
+    FILE *fp = fopen("pedido.bin", "rb"); // Intentamos abrir el archivo en modo lectura
+
+    if (!fp) // Si no existe, lo creamos
+    {
+        fp = fopen("pedido.bin", "wb"); // Crea el archivo en modo escritura binaria
+        if (fp)
+        {
+            int numPedidos = 0;
+            fwrite(&numPedidos, sizeof(int), 1, fp); // Escribe un 0 indicando que no hay pedidos
+            fclose(fp);
+            printf("Archivo 'pedido.bin' creado correctamente.\n");
+        }
+        else
+        {
+            printf("Error al crear el archivo 'pedido.bin'.\n");
+        }
+    }
+    else
+    {
+        fclose(fp);
+    }
+}
 
 int guardarPedidos(const char *nombreArchivo, Pedido *pedidos, int numPedidos)
 {

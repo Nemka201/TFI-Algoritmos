@@ -11,5 +11,6 @@ int validarNombreUsuario(const char* nombreUsuario, Usuario usuarios[], int cant
 int validarContraseña(const char* contrasena);
 void registrarUsuario(Usuario usuarios[], int* cantidadUsuarios, int maxUsuarios);
 void mostrarMenuLogin();
+void inputMenuLogin();
 
 #endif

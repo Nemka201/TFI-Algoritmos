@@ -5,12 +5,36 @@
 #include "repositories.h"
 #include <conio.h>
 
+#define MAX_USUARIOS 100
+
 // Funcion para mostrar el menu de login
 void mostrarMenuLogin() {
     printf("\n--- Menu de Login ---\n");
     printf("1. Iniciar sesion\n");
     printf("2. Registrar un nuevo usuario\n");
     printf("Ingrese una opcion: ");
+}
+// Funcion para manejar menu de Login
+void inputMenuLogin(){
+    Usuario usuarios[MAX_USUARIOS];
+    int cantidadUsuarios = cargarUsuarios(usuarios, MAX_USUARIOS);
+    
+    int loginExitoso = 0;
+    while (!loginExitoso) {
+        mostrarMenuLogin();
+        int opcionLogin;
+    
+        scanf("%d", &opcionLogin);
+    
+        if (opcionLogin == 1) {
+            loginExitoso = iniciarSesion(usuarios, cantidadUsuarios);
+        }
+        else if (opcionLogin == 2) {
+            registrarUsuario(usuarios, &cantidadUsuarios, MAX_USUARIOS);
+            guardarUsuarios(usuarios, cantidadUsuarios);
+            printf("\n");
+        }
+    }
 }
 
 // Funcion para iniciar sesion

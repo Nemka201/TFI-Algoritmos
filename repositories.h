@@ -90,6 +90,7 @@ int eliminarDetallePedido(const char* nombreArchivo, int id);
 Pedido buscarPedidoPorId(const char *nombreArchivo, int id);
 
 // Funciones para manejar persistencia de usuarios
+
 int cargarUsuarios(Usuario usuarios[], int maxUsuarios);
 void guardarUsuarios(Usuario usuarios[], int cantidadUsuarios);
 

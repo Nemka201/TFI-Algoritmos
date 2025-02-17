@@ -7,41 +7,20 @@
 #include "pedido-servicio.h"
 #include "detalle-servicio.h"
 
-void MainMenu();
+void mainMenu();
 void inputMenuProductos();
 void inputMenuMesas();
 void inputMenuPedido();
 void inputMenuDetalle();
 
-#define MAX_USUARIOS 100
-
 int main()
 {
-    Usuario usuarios[MAX_USUARIOS];
-    int cantidadUsuarios = cargarUsuarios(usuarios, MAX_USUARIOS);
-
-    int loginExitoso = 0;
-    while (!loginExitoso) {
-        mostrarMenuLogin();
-        int opcionLogin;
-
-        scanf("%d", &opcionLogin);
-
-        if (opcionLogin == 1) {
-            loginExitoso = iniciarSesion(usuarios, cantidadUsuarios);
-        }
-        else if (opcionLogin == 2) {
-            registrarUsuario(usuarios, &cantidadUsuarios, MAX_USUARIOS);
-            guardarUsuarios(usuarios, cantidadUsuarios);
-            printf("\n");
-        }
-    }
-
-    MainMenu();
+    inputMenuLogin();
+    mainMenu();
     return 0;
 }
 
-void MainMenu()
+void mainMenu()
 {
     int opcion;
 
@@ -185,13 +164,17 @@ void inputMenuPedido()
             break;
 
         case 6:
+            mostrarPedidosConTotales();
+            break;
+
+        case 7:
             printf("\nVolviendo...\n");
             break;
 
         default:
             printf("Opción no válida. Intente de nuevo.\n");
         }
-    } while (opcion != 6);
+    } while (opcion != 7);
 }
 // Función selector del menu Pedidos
 void inputMenuDetalle()
@@ -209,17 +192,13 @@ void inputMenuDetalle()
             break;
 
         case 2:
-            // int id;
-            // printf("\nIngrese el ID del Pedido\n");
-            // scanf("%d", &id);
-            // calcularTotalPedido(id);
             calcularTotalPedidoMenu();
             break;
         case 3:
-            int i;
+            int id;
             printf("\nIngrese el ID del Pedido\n");
-            scanf("%d", &i);
-            mostrarDetallesPedido(i);
+            scanf("%d", &id);
+            mostrarDetallesPedido(id);
             break;
         case 4:
             printf("\nVolviendo...\n");

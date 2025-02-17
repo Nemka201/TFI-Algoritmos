@@ -5,8 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define FILE_PEDIDO "pedido.bin"
-#define FILE_MESAS "mesas.bin"
 
 void mostrarMenuPedido() {
     crearArch();
@@ -16,7 +14,8 @@ void mostrarMenuPedido() {
     printf("3. Editar pedido\n");
     printf("4. Eliminar pedido\n");
     printf("5. Buscar pedidios por mesa\n");
-    printf("6. Volver\n");
+    printf("6. Mostrar todos los pedidos\n");
+    printf("7. Volver\n");
     printf("Seleccione una opcion: ");
 }
 
@@ -217,20 +216,60 @@ void buscarPedidosPorMesaMenu()
 
     free(pedidosMesa);
 }
+// void calcularTotalPedidoMenu()
+// {
+//     int idPedido;
+//     printf("Ingrese el ID del pedido a calcular: ");
+//     scanf("%d", &idPedido);
+
+//     float total = calcularTotalPedido("detalles_pedido.dat", idPedido);
+
+//     if (total > 0.0f)
+//     {
+//         printf("El total del pedido %d es: %.2f\n", idPedido, total);
+//     }
+//     else
+//     {
+//         printf("No se pudo calcular el total del pedido.\n");
+//     }
+// }
+
 void calcularTotalPedidoMenu()
 {
     int idPedido;
+    float totalPedido;
     printf("Ingrese el ID del pedido a calcular: ");
     scanf("%d", &idPedido);
-
-    float total = calcularTotalPedido("detalles_pedido.dat", idPedido);
-
-    if (total > 0.0f)
+    totalPedido = calcularTotalPedido(FILE_DETALLES, idPedido);
+    if (totalPedido > 0.0f)
     {
-        printf("El total del pedido %d es: %.2f\n", idPedido, total);
+        printf("El total del pedido %d es: %.2f\n", idPedido, totalPedido);
     }
     else
     {
         printf("No se pudo calcular el total del pedido.\n");
     }
+}
+void mostrarPedidosConTotales() {
+    int numPedidos;
+    Pedido *pedidos = cargarPedidos(FILE_PEDIDO, &numPedidos);
+
+    if (!pedidos || numPedidos == 0) {
+        printf("No hay pedidos registrados.\n");
+        return;
+    }
+
+    printf("\nListado de Pedidos con Totales:\n");
+    printf("-------------------------------------------------\n");
+    for (int i = 0; i < numPedidos; i++) {
+        float total = calcularTotalPedido(FILE_DETALLES, pedidos[i].id);
+        printf("Pedido ID: %d\n", pedidos[i].id);
+        printf("Mesa ID: %d\n", pedidos[i].mesa.id);
+        printf("Fecha: %s\n", pedidos[i].fechaHora);
+        printf("Estado: %s\n", pedidos[i].estado);
+        printf("Total a pagar: %.2f\n", total);
+        printf("-------------------------------------------------\n");
+    }
+
+    free(pedidos);
 }

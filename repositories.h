@@ -86,6 +86,7 @@ DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido);
 int agregarDetallePedido(const char* nombreArchivo, DetallePedido nuevoDetalle);
 int modificarDetallePedido(const char* nombreArchivo, int id, DetallePedido nuevoDetalle);
 int eliminarDetallePedido(const char* nombreArchivo, int id);
+Pedido buscarPedidoPorId(const char *nombreArchivo, int id);
 
 // Funciones para manejar persistencia de usuarios
 int cargarUsuarios(Usuario usuarios[], int maxUsuarios);

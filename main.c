@@ -5,15 +5,18 @@
 #include "producto-servicio.h"
 #include "login-servicio.h"
 #include "pedido-servicio.h"
+#include "detalle-servicio.h"
 
 void MainMenu();
 void inputMenuProductos();
 void inputMenuMesas();
 void inputMenuPedido();
+void inputMenuDetalle();
 
 #define MAX_USUARIOS 100
 
-int main() {
+int main()
+{
     /*Usuario usuarios[MAX_USUARIOS];
     int cantidadUsuarios = cargarUsuarios(usuarios, MAX_USUARIOS);
 
@@ -21,7 +24,7 @@ int main() {
     while (!loginExitoso) {
         mostrarMenuLogin();
         int opcionLogin;
-        
+
         scanf("%d", &opcionLogin);
 
         if (opcionLogin == 1) {
@@ -38,7 +41,6 @@ int main() {
     return 0;
 }
 
-
 void MainMenu()
 {
     int opcion;
@@ -48,7 +50,7 @@ void MainMenu()
         system("pause");
         system("cls");
         printf("\nMenu Principal\n");
-        printf("1. Opcion 1\n");
+        printf("1. Detalle Pedidos \n");
         printf("2. Pedidos\n");
         printf("3. Gestion Productos\n");
         printf("4. Gestion de mesas\n");
@@ -59,7 +61,7 @@ void MainMenu()
         switch (opcion)
         {
         case 1:
-            printf("Has seleccionado la opcion 1\n");
+            inputMenuDetalle();
             break;
         case 2:
             inputMenuPedido();
@@ -189,4 +191,39 @@ void inputMenuPedido()
             printf("Opción no válida. Intente de nuevo.\n");
         }
     } while (opcion != 6);
+}
+// Función selector del menu Pedidos
+void inputMenuDetalle()
+{
+    int opcion;
+    do
+    {
+        mostrarMenuDetalle();
+        scanf("%d", &opcion);
+
+        switch (opcion)
+        {
+        case 1:
+            agregarDetallePedidoService();
+            break;
+
+        case 2:
+            int id;
+            printf("\nIngrese el ID del Pedido\n");
+            scanf("%d", &id);
+            // calcularTotalPedido(id);
+            break;
+        case 3:
+            int i;
+            printf("\nIngrese el ID del Pedido\n");
+            scanf("%d", &i);
+            mostrarDetallesPedido(i);
+            break;
+        case 4:
+            printf("\nVolviendo...\n");
+            break;
+        default:
+            printf("Opción no válida. Intente de nuevo.\n");
+        }
+    } while (opcion != 4);
 }

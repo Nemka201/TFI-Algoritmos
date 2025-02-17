@@ -8,6 +8,19 @@
 #define FILE_PRODUCTOS "productos.bin"
 #define FILE_PEDIDOS "pedido.bin"
 
+// Función para mostrar el menú
+void mostrarMenuDetalle()
+{
+    printf("\n-------------------------------------\n");
+    printf("\n--- Menu de Gestion de Pedidos ---\n");
+    printf("1. Cargar venta a pedido\n");
+    printf("2. Mostrar total pedido\n");
+    printf("3. Mostrar detalles de un pedido\n");
+    printf("4. Volver\n");
+
+    printf("Seleccione una opcion: ");
+}
+
 // Obtener el último ID registrado para asignar uno nuevo
 int obtenerUltimoIdDetallePedido(const char *nombreArchivo)
 {
@@ -43,74 +56,8 @@ int obtenerUltimoIdDetallePedido(const char *nombreArchivo)
     return ultimoDetalle.id;
 }
 
-// Cargar los detalles de pedido desde el archivo binario
-DetallePedido *cargarDetallesPedidos(const char *nombreArchivo, int *numDetalles)
-{
-    FILE *fp = fopen(nombreArchivo, "rb");
-    if (!fp)
-    {
-        *numDetalles = 0;
-        return NULL;
-    }
-
-    if (fread(numDetalles, sizeof(int), 1, fp) != 1)
-    {
-        fclose(fp);
-        *numDetalles = 0;
-        return NULL;
-    }
-
-    if (*numDetalles <= 0)
-    {
-        fclose(fp);
-        return NULL;
-    }
-
-    DetallePedido *detalles = (DetallePedido *)malloc((*numDetalles) * sizeof(DetallePedido));
-    if (!detalles)
-    {
-        fclose(fp);
-        return NULL;
-    }
-
-    if (fread(detalles, sizeof(DetallePedido), *numDetalles, fp) != (size_t)(*numDetalles))
-    {
-        free(detalles);
-        fclose(fp);
-        return NULL;
-    }
-
-    fclose(fp);
-    return detalles;
-}
-
-// Guardar los detalles de pedido en el archivo binario
-int guardarDetallesPedidos(const char *nombreArchivo, DetallePedido *detalles, int numDetalles)
-{
-    FILE *fp = fopen(nombreArchivo, "wb");
-    if (!fp)
-    {
-        return 0;
-    }
-
-    if (fwrite(&numDetalles, sizeof(int), 1, fp) != 1)
-    {
-        fclose(fp);
-        return 0;
-    }
-
-    if (fwrite(detalles, sizeof(DetallePedido), numDetalles, fp) != (size_t)numDetalles)
-    {
-        fclose(fp);
-        return 0;
-    }
-
-    fclose(fp);
-    return 1;
-}
-
 // Nueva función para agregar un detalle de pedido con entrada manual
-int agregarDetallePedido(const char *nombreArchivo)
+int agregarDetallePedidoService()
 {
     int pedidoId, productoId, cantidad;
 
@@ -147,7 +94,7 @@ int agregarDetallePedido(const char *nombreArchivo)
     }
 
     // Obtener el último ID registrado y calcular el nuevo
-    int ultimoId = obtenerUltimoIdDetallePedido(nombreArchivo);
+    int ultimoId = obtenerUltimoIdDetallePedido(FILE_DETALLE_PEDIDO);
     int nuevoId = (ultimoId == -1) ? 0 : ultimoId + 1;
 
     DetallePedido nuevoDetalle;
@@ -159,7 +106,7 @@ int agregarDetallePedido(const char *nombreArchivo)
 
     // Cargar detalles existentes
     int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
+    DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLE_PEDIDO, &numDetalles);
 
     // Agregar el nuevo detalle
     DetallePedido *nuevosDetalles = (DetallePedido *)realloc(detalles, (numDetalles + 1) * sizeof(DetallePedido));
@@ -173,7 +120,7 @@ int agregarDetallePedido(const char *nombreArchivo)
     numDetalles++;
 
     // Guardar en el archivo
-    if (!guardarDetallesPedidos(nombreArchivo, nuevosDetalles, numDetalles))
+    if (!guardarDetallesPedidos(FILE_DETALLE_PEDIDO, nuevosDetalles, numDetalles))
     {
         free(nuevosDetalles);
         return 0;
@@ -183,131 +130,59 @@ int agregarDetallePedido(const char *nombreArchivo)
     printf("Detalle de pedido agregado correctamente.\n");
     return 1;
 }
-
-// Función para buscar un pedido por ID
-Pedido buscarPedidoPorId(const char *nombreArchivo, int id)
-{
-    FILE *fp = fopen(nombreArchivo, "rb");
-    Pedido pedido;
-    pedido.id = -1; // Indicar que no se encontró
-
-    if (!fp)
-        return pedido;
-
-    while (fread(&pedido, sizeof(Pedido), 1, fp) == 1)
-    {
-        if (pedido.id == id)
-        {
-            fclose(fp);
-            return pedido;
-        }
-    }
-
-    fclose(fp);
-    pedido.id = -1;
-    return pedido;
-}
-
-// Buscar un detalle de pedido por ID
-DetallePedido *buscarDetallePedido(const char *nombreArchivo, int id)
+// Función para mostrar los detalles de un pedido
+void mostrarDetallesPedido(int pedidoId)
 {
     int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
-
-    for (int i = 0; i < numDetalles; i++)
-    {
-        if (detalles[i].id == id)
-        {
-            DetallePedido *detalleEncontrado = (DetallePedido *)malloc(sizeof(DetallePedido));
-            memcpy(detalleEncontrado, &detalles[i], sizeof(DetallePedido));
-            free(detalles);
-            return detalleEncontrado;
-        }
-    }
-
-    free(detalles);
-    return NULL;
-}
-
-// Modificar un detalle de pedido
-int modificarDetallePedido(const char *nombreArchivo, int id, int nuevaCantidad, double nuevoPrecio)
-{
-    int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
-
-    for (int i = 0; i < numDetalles; i++)
-    {
-        if (detalles[i].id == id)
-        {
-            detalles[i].cantidad = nuevaCantidad;
-            detalles[i].subTotalProducto = nuevaCantidad * nuevoPrecio;
-            guardarDetallesPedidos(nombreArchivo, detalles, numDetalles);
-            free(detalles);
-            return 1;
-        }
-    }
-
-    free(detalles);
-    return 0;
-}
-
-// Eliminar un detalle de pedido
-int eliminarDetallePedido(const char *nombreArchivo, int id)
-{
-    int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
-
-    int indiceEliminar = -1;
-    for (int i = 0; i < numDetalles; i++)
-    {
-        if (detalles[i].id == id)
-        {
-            indiceEliminar = i;
-            break;
-        }
-    }
-
-    if (indiceEliminar == -1)
-    {
-        free(detalles);
-        return 0;
-    }
-
-    for (int i = indiceEliminar; i < numDetalles - 1; i++)
-    {
-        detalles[i] = detalles[i + 1];
-    }
-
-    numDetalles--;
-
-    if (!guardarDetallesPedidos(nombreArchivo, detalles, numDetalles))
-    {
-        free(detalles);
-        return 0;
-    }
-
-    free(detalles);
-    return 1;
-}
-
-// Listar todos los detalles de pedido
-void listarDetallesPedidos(const char *nombreArchivo)
-{
-    int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
+    DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLE_PEDIDO, &numDetalles);
 
     if (!detalles || numDetalles == 0)
     {
-        printf("No hay detalles de pedido registrados.\n");
+        printf("No hay detalles de pedidos registrados.\n");
         return;
     }
 
-    printf("ID | Pedido ID | Producto ID | Cantidad | Subtotal\n");
+    printf("\nDetalles del Pedido ID: %d\n", pedidoId);
+    printf("-------------------------------------------------\n");
+    double total = 0.0;
+
     for (int i = 0; i < numDetalles; i++)
     {
-        printf("%d | %d | %d | %d | %.2f\n",
-               detalles[i].id, detalles[i].pedido.id,
-               detalles[i].producto.id, detalles[i].cantidad, detalles[i].subTotalProducto);
+        if (detalles[i].pedido.id == pedidoId)
+        {
+            printf("Producto: %s\n", detalles[i].producto.nombre);
+            printf("Cantidad: %d\n", detalles[i].cantidad);
+            printf("Precio Unitario: %.2f\n", detalles[i].producto.precio);
+            printf("Subtotal: %.2f\n", detalles[i].subTotalProducto);
+            printf("-------------------------------------------------\n");
+            total += detalles[i].subTotalProducto;
+        }
     }
+
+    printf("Total a pagar: %.2f\n", total);
     free(detalles);
 }
+
+// // Función para calcular el total de un pedido
+// double calcularTotalPedido(int pedidoId)
+// {
+//     int numDetalles;
+//     DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLE_PEDIDO, &numDetalles);
+
+//     if (!detalles || numDetalles == 0)
+//     {
+//         return 0.0;
+//     }
+
+//     double total = 0.0;
+//     for (int i = 0; i < numDetalles; i++)
+//     {
+//         if (detalles[i].pedido.id == pedidoId)
+//         {
+//             total += detalles[i].subTotalProducto;
+//         }
+//     }
+
+//     free(detalles);
+//     return total;
+// }

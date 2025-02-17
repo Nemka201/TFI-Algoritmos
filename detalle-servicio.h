@@ -7,15 +7,10 @@
 #include "producto-servicio.h"
 
 // Funciones prototipo
+void mostrarMenuDetalle();
 int obtenerUltimoIdDetallePedido(const char *nombreArchivo);
-DetallePedido *cargarDetallesPedidos(const char *nombreArchivo, int *numDetalles);
-int guardarDetallesPedidos(const char *nombreArchivo, DetallePedido *detalles, int numDetalles);
-int agregarDetallePedido(const char *nombreArchivo);
-Pedido buscarPedidoPorId(const char *nombreArchivo, int id);
-DetallePedido *buscarDetallePedido(const char *nombreArchivo, int id);
-int modificarDetallePedido(const char *nombreArchivo, int id, int nuevaCantidad, double nuevoPrecio);
-int eliminarDetallePedido(const char *nombreArchivo, int id);
-void listarDetallesPedidos(const char *nombreArchivo);
-
+int agregarDetallePedidoService();
+// double calcularTotalPedido(int pedidoId);
+void mostrarDetallesPedido(int pedidoId);
 
 #endif

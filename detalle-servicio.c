@@ -7,7 +7,6 @@
 // Función para mostrar el menú
 void mostrarMenuDetalle()
 {
-    void mostrarTodosLosDetallesPedidos();
     printf("\n-------------------------------------\n");
     printf("\n--- Menu de Ventas ---\n");
     printf("1. Cargar venta a pedido\n");
@@ -183,15 +182,15 @@ void mostrarTodosLosDetallesPedidos()
     }
 
     printf("\nTodos los detalles de los pedidos:\n");
+ printf("\n%-10s %-20s %-10s %-15s\n", "ID Pedido", "Producto", "Cantidad", "Subtotal");
     printf("-------------------------------------------------\n");
 
-    for (int i = 0; i < numDetalles; i++)
-    {
-        printf("ID Pedido: %d\n", detalles[i].pedido.id);
-        printf("Producto: %s\n", detalles[i].producto.nombre);
-        printf("Cantidad: %d\n", detalles[i].cantidad);
-        printf("Subtotal: %.2lf\n", detalles[i].subTotalProducto);
-        printf("-------------------------------------------------\n");
+    for (int i = 0; i < numDetalles; i++) {
+        printf("%-10d %-20s %-10d %-15.2lf\n", 
+               detalles[i].pedido.id, 
+               detalles[i].producto.nombre, 
+               detalles[i].cantidad, 
+               detalles[i].subTotalProducto);
     }
 
     free(detalles);

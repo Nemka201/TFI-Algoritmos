@@ -197,10 +197,7 @@ void inputMenuDetalle()
             calcularTotalPedidoMenu();
             break;
         case 3:
-            int id;
-            printf("\nIngrese el ID del Pedido\n");
-            scanf("%d", &id);
-            mostrarDetallesPedido(id);
+            mostrarDetallesPedido();
             break;
         case 4:
             printf("\nVolviendo...\n");

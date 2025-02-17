@@ -403,39 +403,39 @@ int eliminarPedido(const char *nombreArchivo, int id)
     return pedidosMesa;
 }
 
-float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
-{
-    int totalDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivoDetalles, &totalDetalles);
+// float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
+// {
+//     int totalDetalles;
+//     DetallePedido *detalles = cargarDetallesPedidos(nombreArchivoDetalles, &totalDetalles);
 
-    if (!detalles || totalDetalles == 0)
-    {
-        printf("No hay detalles de pedidos registrados o error al cargar el archivo.\n");
-        return 0.0f;
-    }
+//     if (!detalles || totalDetalles == 0)
+//     {
+//         printf("No hay detalles de pedidos registrados o error al cargar el archivo.\n");
+//         return 0.0f;
+//     }
 
-    float total = 0.0f;
-    int encontrado = 0;
+//     float total = 0.0f;
+//     int encontrado = 0;
 
-    for (int i = 0; i < totalDetalles; i++)
-    {
-        if (detalles[i].pedido.id == idPedido)
-        {
-            encontrado = 1;
-            total += detalles[i].subTotalProducto; // Usamos el subtotal almacenado en la estructura
-        }
-    }
+//     for (int i = 0; i < totalDetalles; i++)
+//     {
+//         if (detalles[i].pedido.id == idPedido)
+//         {
+//             encontrado = 1;
+//             total += detalles[i].subTotalProducto; // Usamos el subtotal almacenado en la estructura
+//         }
+//     }
 
-    free(detalles);
+//     free(detalles);
 
-    if (!encontrado)
-    {
-        printf("Pedido con ID %d no encontrado.\n", idPedido);
-        return 0.0f;
-    }
+//     if (!encontrado)
+//     {
+//         printf("Pedido con ID %d no encontrado.\n", idPedido);
+//         return 0.0f;
+//     }
 
-    return total;
-}
+//     return total;
+// }
 
 
 

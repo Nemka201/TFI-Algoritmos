@@ -146,7 +146,6 @@ void crearArchivoPedidos()
             int numPedidos = 0;
             fwrite(&numPedidos, sizeof(int), 1, fp); // Escribe un 0 indicando que no hay pedidos
             fclose(fp);
-            printf("Archivo 'pedido.bin' creado correctamente.\n");
         }
         else
         {
@@ -174,6 +173,7 @@ int guardarPedidos(const char *nombreArchivo, Pedido *pedidos, int numPedidos)
 }
 Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
 {
+    crearArchivoPedidos();
     FILE *fp = fopen(nombreArchivo, "rb");
     if (!fp)
     {
@@ -223,6 +223,7 @@ Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
 
 Pedido buscarPedidoPorId(const char *nombreArchivo, int id)
 {
+    crearArchivoPedidos();
     int numPedidos;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
     Pedido pedidoEncontrado = {0};
@@ -242,6 +243,7 @@ Pedido buscarPedidoPorId(const char *nombreArchivo, int id)
 }
 int agregarPedido(const char *nombreArchivo, Pedido nuevoPedido)
 {
+    crearArchivoPedidos();
     int numPedidos = 0;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
 
@@ -279,6 +281,7 @@ int agregarPedido(const char *nombreArchivo, Pedido nuevoPedido)
 
 int modificarPedido(const char *nombreArchivo, int id, Pedido nuevoPedido)
 {
+    crearArchivoPedidos();
     int numPedidos;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
     if (!pedidos)
@@ -299,6 +302,7 @@ int modificarPedido(const char *nombreArchivo, int id, Pedido nuevoPedido)
 
 int eliminarPedido(const char *nombreArchivo, int id)
 {
+    crearArchivoPedidos();
     // Verificar si el pedido existe antes de intentar eliminarlo
     Pedido pedidoEncontrado = buscarPedidoPorId(nombreArchivo, id);
     if (pedidoEncontrado.id == 0)
@@ -376,6 +380,7 @@ int eliminarPedido(const char *nombreArchivo, int id)
 
  Pedido *buscarPedidosPorMesa(const char *nombreArchivo, int idMesa, int *numPedidos)
 {
+    crearArchivoPedidos();
     int totalPedidos;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &totalPedidos);
 
@@ -431,6 +436,7 @@ int eliminarPedido(const char *nombreArchivo, int id)
 
 float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
 {
+    crearArchivoPedidos();
     int totalDetalles;
     DetallePedido *detalles = cargarDetallesPedidos(nombreArchivoDetalles, &totalDetalles);
 

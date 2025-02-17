@@ -14,7 +14,6 @@ void modificarPedidoMenu();
 void eliminarPedidoMenu();
 void buscarPedidosPorMesaMenu();
 void calcularTotalPedidoMenu();
-void crearArch();
 void mostrarPedidosConTotales();
 
 #endif

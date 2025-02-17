@@ -19,10 +19,6 @@ void mostrarMenuPedido() {
     printf("Seleccione una opcion: ");
 }
 
-void crearArch(){
-    crearArchivoPedidos();
-}
-
 int obtenerUltimoIdPedido(const char *nombreArchivo) {
     FILE *fp = fopen(nombreArchivo, "rb");
     if (!fp) {
@@ -216,23 +212,6 @@ void buscarPedidosPorMesaMenu()
 
     free(pedidosMesa);
 }
-// void calcularTotalPedidoMenu()
-// {
-//     int idPedido;
-//     printf("Ingrese el ID del pedido a calcular: ");
-//     scanf("%d", &idPedido);
-
-//     float total = calcularTotalPedido("detalles_pedido.dat", idPedido);
-
-//     if (total > 0.0f)
-//     {
-//         printf("El total del pedido %d es: %.2f\n", idPedido, total);
-//     }
-//     else
-//     {
-//         printf("No se pudo calcular el total del pedido.\n");
-//     }
-// }
 
 void calcularTotalPedidoMenu()
 {

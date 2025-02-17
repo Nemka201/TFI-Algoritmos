@@ -1,5 +1,8 @@
 #ifndef DETALLE_SERVICIO_H
 #define DETALLE_SERVICIO_H
+#define FILE_DETALLES "detalles.bin"
+#define FILE_PRODUCTOS "productos.bin"
+#define FILE_PEDIDOS "pedido.bin"
 
 #include "repositories.h"
 #include "detalle-servicio.h"

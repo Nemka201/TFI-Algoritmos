@@ -4,15 +4,11 @@
 #include <stdbool.h>
 #include "detalle-servicio.h"
 
-#define FILE_DETALLE_PEDIDO "detalles_pedido.dat"
-#define FILE_PRODUCTOS "productos.bin"
-#define FILE_PEDIDOS "pedido.bin"
-
 // Función para mostrar el menú
 void mostrarMenuDetalle()
 {
     printf("\n-------------------------------------\n");
-    printf("\n--- Menu de Gestion de Pedidos ---\n");
+    printf("\n--- Menu de Ventas ---\n");
     printf("1. Cargar venta a pedido\n");
     printf("2. Mostrar total pedido\n");
     printf("3. Mostrar detalles de un pedido\n");
@@ -62,16 +58,16 @@ int agregarDetallePedidoService()
     int pedidoId, productoId, cantidad;
 
     // Pedir ID del pedido
+    mostrarPedidosConTotales();
     printf("Ingrese el ID del pedido: ");
     scanf("%d", &pedidoId);
-
     Pedido pedido = buscarPedidoPorId(FILE_PEDIDOS, pedidoId);
     if (pedido.id == -1)
     {
         printf("Pedido no encontrado.\n");
         return 0;
     }
-
+    mostrarTodosLosProductos();
     // Pedir ID del producto
     printf("Ingrese el ID del producto: ");
     scanf("%d", &productoId);
@@ -94,7 +90,7 @@ int agregarDetallePedidoService()
     }
 
     // Obtener el último ID registrado y calcular el nuevo
-    int ultimoId = obtenerUltimoIdDetallePedido(FILE_DETALLE_PEDIDO);
+    int ultimoId = obtenerUltimoIdDetallePedido(FILE_DETALLES);
     int nuevoId = (ultimoId == -1) ? 0 : ultimoId + 1;
 
     DetallePedido nuevoDetalle;
@@ -106,7 +102,7 @@ int agregarDetallePedidoService()
 
     // Cargar detalles existentes
     int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLE_PEDIDO, &numDetalles);
+    DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLES, &numDetalles);
 
     // Agregar el nuevo detalle
     DetallePedido *nuevosDetalles = (DetallePedido *)realloc(detalles, (numDetalles + 1) * sizeof(DetallePedido));
@@ -120,7 +116,7 @@ int agregarDetallePedidoService()
     numDetalles++;
 
     // Guardar en el archivo
-    if (!guardarDetallesPedidos(FILE_DETALLE_PEDIDO, nuevosDetalles, numDetalles))
+    if (!guardarDetallesPedidos(FILE_DETALLES, nuevosDetalles, numDetalles))
     {
         free(nuevosDetalles);
         return 0;
@@ -134,7 +130,7 @@ int agregarDetallePedidoService()
 void mostrarDetallesPedido(int pedidoId)
 {
     int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLE_PEDIDO, &numDetalles);
+    DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLES, &numDetalles);
 
     if (!detalles || numDetalles == 0)
     {

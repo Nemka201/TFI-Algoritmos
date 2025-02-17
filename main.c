@@ -6,6 +6,7 @@
 #include "login-servicio.h"
 #include "pedido-servicio.h"
 #include "detalle-servicio.h"
+#include <locale.h>
 
 void mainMenu();
 void inputMenuProductos();
@@ -15,7 +16,8 @@ void inputMenuDetalle();
 
 int main()
 {
-    inputMenuLogin();
+    setlocale(LC_ALL, "es_ES"); // Configura la localización a español de España
+    // inputMenuLogin();
     mainMenu();
     return 0;
 }
@@ -29,10 +31,10 @@ void mainMenu()
         system("pause");
         system("cls");
         printf("\nMenu Principal\n");
-        printf("1. Detalle Pedidos \n");
+        printf("1. Ventas \n");
         printf("2. Pedidos\n");
         printf("3. Gestion Productos\n");
-        printf("4. Gestion de mesas\n");
+        printf("4. Gestion Mesas\n");
         printf("5. Salir\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);

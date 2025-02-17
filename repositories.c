@@ -273,114 +273,172 @@ int modificarPedido(const char *nombreArchivo, int id, Pedido nuevoPedido)
 
 int eliminarPedido(const char *nombreArchivo, int id)
 {
-    int numPedidos;
-    Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
-
-    if (!pedidos || numPedidos == 0)  
+    // Verificar si el pedido existe antes de intentar eliminarlo
+    Pedido pedidoEncontrado = buscarPedidoPorId(nombreArchivo, id);
+    if (pedidoEncontrado.id == 0)
     {
-        printf("No hay pedidos registrados.\n");
+        printf("Error: No se encontró el pedido con ID %d.\n", id);
         return 0;
     }
 
-    int indice = -1;
+    FILE *archivo = fopen(nombreArchivo, "rb");
+    FILE *aux = fopen("aux.bin", "wb");
 
-    // Buscar el pedido por ID
+    if (!archivo || !aux)
+    {
+        perror("Error al abrir los archivos");
+        if (archivo) fclose(archivo);
+        if (aux) fclose(aux);
+        return 0;
+    }
+
+    int numPedidos;
+    if (fread(&numPedidos, sizeof(int), 1, archivo) != 1)
+    {
+        printf("Error: No se pudo leer la cantidad de pedidos.\n");
+        fclose(archivo);
+        fclose(aux);
+        remove("aux.bin");
+        return 0;
+    }
+
+    fwrite(&numPedidos, sizeof(int), 1, aux); // Escribir temporalmente el número de pedidos
+
+    Pedido pedido;
+    int pedidosRestantes = 0; // Contador de pedidos válidos
+
     for (int i = 0; i < numPedidos; i++)
     {
-        if (pedidos[i].id == id)
+        if (fread(&pedido, sizeof(Pedido), 1, archivo) != 1)
         {
-            indice = i;
+            printf("Error al leer pedido del archivo.\n");
             break;
         }
-    }
 
-    // Si no se encuentra el pedido, salir
-    if (indice == -1)
-    {
-        printf("Pedido con ID %d no encontrado.\n", id);
-        free(pedidos);
-        return 0;
-    }
-
-    // Desplazar los pedidos hacia la izquierda para sobrescribir el eliminado
-    for (int i = indice; i < numPedidos - 1; i++)
-    {
-        pedidos[i] = pedidos[i + 1];
-    }
-
-    numPedidos--;
-
-    // Si no quedan pedidos, vaciar el archivo y liberar memoria
-    if (numPedidos == 0)
-    {
-        FILE *fp = fopen(nombreArchivo, "wb");
-        if (fp)
+        if (pedido.id != id)
         {
-            fclose(fp);
+            fwrite(&pedido, sizeof(Pedido), 1, aux);
+            pedidosRestantes++;
         }
-        free(pedidos);
-        printf("El último pedido fue eliminado. Archivo vaciado.\n");
-        return 1;
     }
 
-    // Redimensionar el array con realloc()
-    Pedido *nuevosPedidos = (Pedido *)realloc(pedidos, numPedidos * sizeof(Pedido));
+    fclose(archivo);
+    fclose(aux);
 
-    if (!nuevosPedidos && numPedidos > 0) 
+    if (pedidosRestantes == numPedidos) // No se eliminó nada
     {
-        perror("Error al realocar memoria.");
-        free(pedidos);  
+        remove("aux.bin");
+        printf("Error: No se encontró el pedido con ID %d.\n", id);
         return 0;
     }
 
-    // Guardar el nuevo array en el archivo
-    int resultado = guardarPedidos(nombreArchivo, nuevosPedidos, numPedidos);
-    
-    free(nuevosPedidos);
-    return resultado;
+    // Actualizar el número de pedidos en el archivo auxiliar
+    archivo = fopen("aux.bin", "r+b");
+    if (archivo)
+    {
+        fwrite(&pedidosRestantes, sizeof(int), 1, archivo);
+        fclose(archivo);
+    }
+
+    remove(nombreArchivo);
+    rename("aux.bin", nombreArchivo);
+
+    printf("Pedido con ID %d eliminado correctamente.\n", id);
+    return 1;
 }
 
- Pedido *buscarPedidosPorMesa(const char *nombreArchivo, int idMesa, int *numPedidos)
- {
-     int totalPedidos;
-     Pedido *pedidos = cargarPedidos(nombreArchivo, &totalPedidos);
-     if (!pedidos)
-         return NULL;
-     Pedido *pedidosMesa = (Pedido *)malloc(totalPedidos * sizeof(Pedido));
-     int contador = 0;
-     for (int i = 0; i < totalPedidos; i++)
-     {
-         if (pedidos[i].mesa.id == idMesa)
-         {
-             pedidosMesa[contador++] = pedidos[i];
-         }
-     }
-     free(pedidos);
-     *numPedidos = contador;
-     return pedidosMesa;
- }
 
- float calcularTotalPedido(const char *nombreArchivo, int idPedido, int *numPedidos)
- {
-     int totalPedidos;
-     Pedido *pedidos = cargarPedidos(nombreArchivo, &totalPedidos);
-     float total = 0.0f;
-     if (pedidos)
-     {
-         for (int i = 0; i < totalPedidos; i++)
-         {
-             if (pedidos[i].id == idPedido)
-             {
-                 // Aquí debes sumar los costos de los productos del pedido
-                 // Asumiendo que tienes una estructura de DetallePedido con precios
-                 // total += pedidos[i].detalle.precio; // Ajusta esto según tu estructura
-                 break;
-             }
-         }
-         free(pedidos);
-     }
-     return total;
- }
+ Pedido *buscarPedidosPorMesa(const char *nombreArchivo, int idMesa, int *numPedidos)
+{
+    int totalPedidos;
+    Pedido *pedidos = cargarPedidos(nombreArchivo, &totalPedidos);
+
+    if (!pedidos || totalPedidos == 0)
+    {
+        printf("No hay pedidos registrados o error al cargar.\n");
+        *numPedidos = 0;
+        return NULL;
+    }
+
+    // Contar cuántos pedidos pertenecen a la mesa indicada
+    int contador = 0;
+    for (int i = 0; i < totalPedidos; i++)
+    {
+        if (pedidos[i].mesa.id == idMesa)
+        {
+            contador++;
+        }
+    }
+
+    if (contador == 0) // No hay pedidos para la mesa
+    {
+        printf("No se encontraron pedidos para la mesa %d.\n", idMesa);
+        free(pedidos);
+        *numPedidos = 0;
+        return NULL;
+    }
+
+    // Asignar solo el espacio necesario para los pedidos encontrados
+    Pedido *pedidosMesa = (Pedido *)malloc(contador * sizeof(Pedido));
+    if (!pedidosMesa)
+    {
+        perror("Error al asignar memoria para los pedidos de la mesa");
+        free(pedidos);
+        *numPedidos = 0;
+        return NULL;
+    }
+
+    // Copiar los pedidos correspondientes a la mesa
+    int index = 0;
+    for (int i = 0; i < totalPedidos; i++)
+    {
+        if (pedidos[i].mesa.id == idMesa)
+        {
+            pedidosMesa[index++] = pedidos[i];
+        }
+    }
+
+    free(pedidos);
+    *numPedidos = contador;
+    return pedidosMesa;
+}
+
+float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
+{
+    int totalDetalles;
+    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivoDetalles, &totalDetalles);
+
+    if (!detalles || totalDetalles == 0)
+    {
+        printf("No hay detalles de pedidos registrados o error al cargar el archivo.\n");
+        return 0.0f;
+    }
+
+    float total = 0.0f;
+    int encontrado = 0;
+
+    for (int i = 0; i < totalDetalles; i++)
+    {
+        if (detalles[i].pedido.id == idPedido)
+        {
+            encontrado = 1;
+            total += detalles[i].subTotalProducto; // Usamos el subtotal almacenado en la estructura
+        }
+    }
+
+    free(detalles);
+
+    if (!encontrado)
+    {
+        printf("Pedido con ID %d no encontrado.\n", idPedido);
+        return 0.0f;
+    }
+
+    return total;
+}
+
+
+
 
 // PRODUCTOS //
 

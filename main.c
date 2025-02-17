@@ -181,6 +181,7 @@ void inputMenuPedido()
             break;
 
         case 5:
+            buscarPedidosPorMesaMenu();
             break;
 
         case 6:

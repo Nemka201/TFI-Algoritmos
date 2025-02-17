@@ -66,7 +66,7 @@ int agregarPedido(const char* nombreArchivo, Pedido nuevoPedido);
 int modificarPedido(const char* nombreArchivo, int id, Pedido nuevoPedido);
 int eliminarPedido(const char* nombreArchivo, int id);
 Pedido* buscarPedidosPorMesa(const char* nombreArchivo, int idMesa, int* numPedidos); // Busca todos los pedidos de una mesa
-float calcularTotalPedido(const char* nombreArchivo, int idPedido, int* numPedidos); // Calcula el total de un pedido
+float calcularTotalPedido(const char* nombreArchivo, int idPedido); // Calcula el total de un pedido
 
 // Prototipos de funciones para Productos
 

@@ -164,25 +164,25 @@ void mostrarDetallesPedido(int pedidoId)
 }
 
 // Función para calcular el total de un pedido
-double calcularTotalPedido(int pedidoId)
-{
-    int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLE_PEDIDO, &numDetalles);
+// double calcularTotalPedido(int pedidoId)
+// {
+//     int numDetalles;
+//     DetallePedido *detalles = cargarDetallesPedidos(FILE_DETALLE_PEDIDO, &numDetalles);
 
-    if (!detalles || numDetalles == 0)
-    {
-        return 0.0;
-    }
+//     if (!detalles || numDetalles == 0)
+//     {
+//         return 0.0;
+//     }
 
-    double total = 0.0;
-    for (int i = 0; i < numDetalles; i++)
-    {
-        if (detalles[i].pedido.id == pedidoId)
-        {
-            total += detalles[i].subTotalProducto;
-        }
-    }
+//     double total = 0.0;
+//     for (int i = 0; i < numDetalles; i++)
+//     {
+//         if (detalles[i].pedido.id == pedidoId)
+//         {
+//             total += detalles[i].subTotalProducto;
+//         }
+//     }
 
-    free(detalles);
-    return total;
-}
+//     free(detalles);
+//     return total;
+// }

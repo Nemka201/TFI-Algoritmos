@@ -17,7 +17,7 @@ void inputMenuDetalle();
 
 int main()
 {
-    /*Usuario usuarios[MAX_USUARIOS];
+    Usuario usuarios[MAX_USUARIOS];
     int cantidadUsuarios = cargarUsuarios(usuarios, MAX_USUARIOS);
 
     int loginExitoso = 0;
@@ -35,7 +35,7 @@ int main()
             guardarUsuarios(usuarios, cantidadUsuarios);
             printf("\n");
         }
-    }*/
+    }
 
     MainMenu();
     return 0;
@@ -209,10 +209,11 @@ void inputMenuDetalle()
             break;
 
         case 2:
-            int id;
-            printf("\nIngrese el ID del Pedido\n");
-            scanf("%d", &id);
+            // int id;
+            // printf("\nIngrese el ID del Pedido\n");
+            // scanf("%d", &id);
             // calcularTotalPedido(id);
+            calcularTotalPedidoMenu();
             break;
         case 3:
             int i;

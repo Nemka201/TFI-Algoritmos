@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
-
-void mostrarMenuPedido() {
+void mostrarMenuPedido()
+{
     crearArch();
     printf("\n--- Menu de Gestion de Pedidos ---\n");
     printf("1. Guardar pedido\n");
@@ -19,41 +20,48 @@ void mostrarMenuPedido() {
     printf("Seleccione una opcion: ");
 }
 
-void crearArch(){
+void crearArch()
+{
     crearArchivoPedidos();
 }
 
-int obtenerUltimoIdPedido(const char *nombreArchivo) {
+int obtenerUltimoIdPedido(const char *nombreArchivo)
+{
     FILE *fp = fopen(nombreArchivo, "rb");
-    if (!fp) {
-        return -1; // Si el archivo no existe, empezamos desde 0
+    if (!fp)
+    {
+        return 0; // Si el archivo no existe, empezamos desde 0
     }
 
     int numPedidos;
-    if (fread(&numPedidos, sizeof(int), 1, fp) != 1) {
+    if (fread(&numPedidos, sizeof(int), 1, fp) != 1)
+    {
         fclose(fp);
-        return -1; // Si no se puede leer el número de pedidos, empezamos desde 0
+        return 0; // Si no se puede leer el número de pedidos, empezamos desde 0
     }
 
-    if (numPedidos <= 0) {
+    if (numPedidos <= 0)
+    {
         fclose(fp);
-        return -1; // No hay pedidos registrados
+        return 0; // No hay pedidos registrados
     }
 
     // Ir al último pedido
     fseek(fp, sizeof(int) + (numPedidos - 1) * sizeof(Pedido), SEEK_SET);
 
     Pedido ultimoPedido;
-    if (fread(&ultimoPedido, sizeof(Pedido), 1, fp) != 1) {
+    if (fread(&ultimoPedido, sizeof(Pedido), 1, fp) != 1)
+    {
         fclose(fp);
-        return -1; // Si hay un error, asumimos que no hay pedidos válidos
+        return 0; // Si hay un error, asumimos que no hay pedidos válidos
     }
 
     fclose(fp);
     return ultimoPedido.id;
 }
 
-void agregarPedidoMenu() {
+void agregarPedidoMenu()
+{
     Pedido nuevoPedido;
     getchar();
 
@@ -61,7 +69,7 @@ void agregarPedidoMenu() {
     int ultimoId = obtenerUltimoIdPedido(FILE_PEDIDO);
     nuevoPedido.id = (ultimoId == -1) ? 0 : ultimoId + 1;
 
-    printf("ID asignado automáticamente: %d\n", nuevoPedido.id);
+    printf("ID: %d\n", nuevoPedido.id);
 
     // Solicitar ID de la mesa asociada al pedido
     printf("Ingrese el ID de la mesa: ");
@@ -70,41 +78,72 @@ void agregarPedidoMenu() {
 
     // Buscar la mesa por ID en el archivo binario
     Mesa mesaEncontrada = buscarMesaPorId(FILE_MESAS, idMesa);
-    
-    if (mesaEncontrada.id == 0) {
-        printf("No se encontró ninguna mesa con el ID %d. Pedido no agregado.\n", idMesa);
+
+    if (mesaEncontrada.id == 0)
+    {
+        printf("No se encontro ninguna mesa con el ID %d. Pedido no agregado.\n", idMesa);
         return;
     }
 
-    // Ocupar la mesa
-    reservarMesa(mesaEncontrada.id);
+    // reservarMesa(mesaEncontrada.id);
     nuevoPedido.mesa = mesaEncontrada;
-    
-    getchar();
-    printf("Ingrese la fecha y hora del pedido (YYYY-MM-DD HH:MM:SS): ");
-    fgets(nuevoPedido.fechaHora, sizeof(nuevoPedido.fechaHora), stdin);
-    nuevoPedido.fechaHora[strcspn(nuevoPedido.fechaHora, "\n")] = 0;
 
-    printf("Ingrese el estado del pedido (Ejemplo: 'Pendiente', 'En proceso', 'Completado'): ");
-    fgets(nuevoPedido.estado, sizeof(nuevoPedido.estado), stdin);
-    nuevoPedido.estado[strcspn(nuevoPedido.estado, "\n")] = 0;
+    getchar();
+
+    // Obtener la fecha y hora actual
+    time_t now = time(0);
+    struct tm *tlocal = localtime(&now);
+    char output[sizeof "YYYY-MM-DD HH:MM:SS"];
+    strftime(output, sizeof(output), "%Y-%m-%d %H:%M:%S", tlocal);
+    strcpy(nuevoPedido.fechaHora, output);
+
+    // Obtener el estado del pedido desde el usuario
+    int estado;
+    do
+    {
+        printf("Ingrese el estado del pedido:\n");
+        printf("1. Pendiente\n");
+        printf("2. En proceso\n");
+        printf("3. Completado\n");
+        scanf("%d", &estado);
+    } while (estado < 1 || estado > 3);
+
+    switch (estado)
+    {
+    case 1:
+        strcpy(nuevoPedido.estado, "Pendiente");
+        break;
+    case 2:
+        strcpy(nuevoPedido.estado, "En proceso");
+        break;
+    case 3:
+        strcpy(nuevoPedido.estado, "Completado");
+        break;
+    default:
+        printf("Opción inválida.\n");
+        break;
+    }
 
     // Guardar el pedido en el archivo binario
-    if (agregarPedido(FILE_PEDIDO, nuevoPedido)) {
+    if (agregarPedido(FILE_PEDIDO, nuevoPedido))
+    {
         printf("Pedido agregado correctamente con ID %d.\n", nuevoPedido.id);
-    } else {
+    }
+    else
+    {
         printf("Error al agregar el pedido.\n");
     }
 }
 
-
-void buscarPedidoMenu(){
+void buscarPedidoMenu()
+{
     int idPedido;
     printf("Ingrese el ID del pedido a buscar: ");
     scanf("%d", &idPedido);
     Pedido pedidoEncontrado = buscarPedidoPorId(FILE_PEDIDO, idPedido);
 
-    if (pedidoEncontrado.id != 0) {
+    if (pedidoEncontrado.id != 0)
+    {
         printf("\n-------------------------------------\n");
         printf("Pedido encontrado:\n");
         printf("ID Pedido: %d\n", pedidoEncontrado.id);
@@ -114,7 +153,9 @@ void buscarPedidoMenu(){
         printf("Disponibilidad: %s\n", pedidoEncontrado.estado);
         printf("Fecha y hora: %s\n", pedidoEncontrado.fechaHora);
         printf("-------------------------------------\n");
-    } else {
+    }
+    else
+    {
         printf("No se encontro ningun pedido con el ID %d.\n", idPedido);
     }
 }
@@ -133,9 +174,10 @@ void modificarPedidoMenu()
         printf("Pedido no encontrado\n");
         return;
     }
-    while (getchar() != '\n'); // Limpiar buffer después de scanf
+    while (getchar() != '\n')
+        ; // Limpiar buffer después de scanf
     // Copiar los datos del pedido actual al nuevo producto
-    idMesaAux= pedidoActual.mesa.id;
+    idMesaAux = pedidoActual.mesa.id;
     nuevoPedido = pedidoActual;
     printf("Ingrese los nuevos datos del pedido:\n");
     printf("Estado: ");
@@ -145,13 +187,14 @@ void modificarPedidoMenu()
 
     printf("ID de la mesa: ");
     scanf("%d", &nuevoPedido.mesa.id);
-    if (nuevoPedido.mesa.id != idMesaAux){
+    if (nuevoPedido.mesa.id != idMesaAux)
+    {
         liberarMesa(idMesaAux);
     }
-    
+
     // Solo si alguno de los datos fue modificado, actualizar el pedido
     if (strcmp(nuevoPedido.estado, pedidoActual.estado) != 0 ||
-        nuevoPedido.mesa.id != pedidoActual.mesa.id )
+        nuevoPedido.mesa.id != pedidoActual.mesa.id)
     {
         if (!modificarPedido(FILE_PEDIDO, id, nuevoPedido))
         {
@@ -250,18 +293,21 @@ void calcularTotalPedidoMenu()
         printf("No se pudo calcular el total del pedido.\n");
     }
 }
-void mostrarPedidosConTotales() {
+void mostrarPedidosConTotales()
+{
     int numPedidos;
     Pedido *pedidos = cargarPedidos(FILE_PEDIDO, &numPedidos);
 
-    if (!pedidos || numPedidos == 0) {
+    if (!pedidos || numPedidos == 0)
+    {
         printf("No hay pedidos registrados.\n");
         return;
     }
 
     printf("\nListado de Pedidos con Totales:\n");
     printf("-------------------------------------------------\n");
-    for (int i = 0; i < numPedidos; i++) {
+    for (int i = 0; i < numPedidos; i++)
+    {
         float total = calcularTotalPedido(FILE_DETALLES, pedidos[i].id);
         printf("Pedido ID: %d\n", pedidos[i].id);
         printf("Mesa ID: %d\n", pedidos[i].mesa.id);

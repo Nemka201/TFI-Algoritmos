@@ -13,7 +13,7 @@
 void mostrarMenuDetalle();
 int obtenerUltimoIdDetallePedido(const char *nombreArchivo);
 int agregarDetallePedidoService();
-// double calcularTotalPedido(int pedidoId);
-void mostrarDetallesPedido(int pedidoId);
+void mostrarDetallesPedido();
+void mostrarTodosLosDetallesPedidos();
 
 #endif

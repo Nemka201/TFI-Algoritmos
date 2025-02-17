@@ -88,27 +88,6 @@ int agregarMesa(const char *nombreArchivo, Mesa nuevaMesa)
     return 1; // Indicar éxito
 }
 
-DetallePedido *cargarDetallesPedidos(const char *nombreArchivo, int *numDetalles)
-{
-    FILE *archivo = fopen(nombreArchivo, "rb");
-    if (archivo == NULL)
-    {
-        perror("Error al abrir el archivo");
-        return NULL;
-    }
-
-    fseek(archivo, 0, SEEK_END);
-    long tamanoArchivo = ftell(archivo);
-    rewind(archivo);
-
-    *numDetalles = tamanoArchivo / sizeof(DetallePedido);
-    DetallePedido *detalles = (DetallePedido *)malloc(*numDetalles * sizeof(DetallePedido));
-
-    fread(detalles, sizeof(DetallePedido), *numDetalles, archivo);
-    fclose(archivo);
-
-    return detalles;
-}
 
 // Función auxiliar para encontrar el índice libre en un arreglo
 int encontrarIndiceLibre(const char *nombreArchivo, int tamEstructura)
@@ -657,163 +636,226 @@ Producto *buscarProductosPorCategoria(const char *nombreArchivo, const char *cat
     return productosEncontrados;
 }
 
+//
 // Detalle - Pedidos //
+//
 
-// Función para guardar los detalles de un pedido en un archivo binario
-int guardarDetallesPedidos(const char *nombreArchivo, DetallePedido *detalles, int numDetalles)
+// Cargar detalles desde archivo binario
+DetallePedido *cargarDetallesPedidos(const char *nombreArchivo, int *numDetalles)
 {
-    FILE *fp = fopen(nombreArchivo, "wb");
-    if (fp == NULL)
+    FILE *archivo = fopen(nombreArchivo, "rb");
+    if (!archivo)
     {
-        perror("Error al abrir el archivo");
-        return 0; // Indicar error
+        *numDetalles = 0;
+        return NULL;
     }
 
-    if (detalles == NULL || numDetalles <= 0)
+    // Obtener tamaño del archivo
+    fseek(archivo, 0, SEEK_END);
+    long tamanoArchivo = ftell(archivo);
+    rewind(archivo);
+
+    if (tamanoArchivo == 0)
     {
-        printf("No hay detalles para guardar.\n");
-        fclose(fp);
-        return 0;
+        *numDetalles = 0;
+        fclose(archivo);
+        return NULL;
     }
 
-    // Escribir el número de detalles
-    if (fwrite(&numDetalles, sizeof(int), 1, fp) != 1)
+    *numDetalles = tamanoArchivo / sizeof(DetallePedido);
+    DetallePedido *detalles = (DetallePedido *)malloc(*numDetalles * sizeof(DetallePedido));
+
+    if (!detalles)
     {
-        perror("Error al escribir el número de detalles");
-        fclose(fp);
-        return 0;
+        perror("Error al asignar memoria");
+        fclose(archivo);
+        return NULL;
     }
 
-    // Escribir los detalles en el archivo
-    if (fwrite(detalles, sizeof(DetallePedido), numDetalles, fp) != (size_t)numDetalles)
+    if (fread(detalles, sizeof(DetallePedido), *numDetalles, archivo) != (size_t)*numDetalles)
     {
-        perror("Error al escribir los detalles");
-        fclose(fp);
-        return 0;
+        perror("Error al leer el archivo");
+        free(detalles);
+        fclose(archivo);
+        return NULL;
     }
 
-    fclose(fp);
-    return 1; // Indicar éxito
+    fclose(archivo);
+    return detalles;
 }
 
-// Función para buscar los detalles de un pedido específico
-DetallePedido *buscarDetallesPorPedido(const char *nombreArchivo, int idPedido)
+// Guardar detalles en archivo binario
+int guardarDetallesPedidos(const char *nombreArchivo, DetallePedido *detalles, int numDetalles)
+{
+    if (!detalles || numDetalles <= 0)
+    {
+        printf("No hay detalles para guardar.\n");
+        return 0;
+    }
+
+    FILE *archivo = fopen(nombreArchivo, "wb");
+    if (!archivo)
+    {
+        perror("Error al abrir el archivo");
+        return 0;
+    }
+
+    if (fwrite(detalles, sizeof(DetallePedido), numDetalles, archivo) != (size_t)numDetalles)
+    {
+        perror("Error al escribir los detalles");
+        fclose(archivo);
+        return 0;
+    }
+
+    fclose(archivo);
+    return 1;
+}
+
+// Buscar detalles por ID de pedido (devuelve una lista de detalles)
+DetallePedido *buscarDetallesPorPedido(const char *nombreArchivo, int idPedido, int *numResultados)
 {
     int numDetalles;
     DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
 
+    if (!detalles)
+    {
+        *numResultados = 0;
+        return NULL;
+    }
+
+    // Contar cuántos detalles coinciden
+    *numResultados = 0;
     for (int i = 0; i < numDetalles; i++)
     {
         if (detalles[i].pedido.id == idPedido)
         {
-            // Crear una copia del detalle encontrado para evitar modificar el arreglo original
-            DetallePedido *detalleEncontrado = (DetallePedido *)malloc(sizeof(DetallePedido));
-            memcpy(detalleEncontrado, &detalles[i], sizeof(DetallePedido));
-            free(detalles);
-            return detalleEncontrado;
+            (*numResultados)++;
+        }
+    }
+
+    if (*numResultados == 0)
+    {
+        free(detalles);
+        return NULL;
+    }
+
+    // Crear un nuevo array con los resultados
+    DetallePedido *resultados = (DetallePedido *)malloc(*numResultados * sizeof(DetallePedido));
+    if (!resultados)
+    {
+        perror("Error al asignar memoria");
+        free(detalles);
+        *numResultados = 0;
+        return NULL;
+    }
+
+    int index = 0;
+    for (int i = 0; i < numDetalles; i++)
+    {
+        if (detalles[i].pedido.id == idPedido)
+        {
+            resultados[index++] = detalles[i];
         }
     }
 
     free(detalles);
-    return NULL; // No se encontró el pedido
+    return resultados;
 }
 
-// Función para agregar un nuevo detalle de pedido
+// Agregar un nuevo detalle de pedido
 int agregarDetallePedido(const char *nombreArchivo, DetallePedido nuevoDetalle)
 {
     int numDetalles;
     DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
 
-    if (detalles == NULL)
-    {
-        numDetalles = 0; // Si no hay detalles cargados, inicializamos el número de detalles en 0
-    }
-
-    // Realizar una copia de los detalles existentes para evitar modificar el arreglo original
     DetallePedido *nuevosDetalles = (DetallePedido *)realloc(detalles, (numDetalles + 1) * sizeof(DetallePedido));
-    if (nuevosDetalles == NULL)
+    if (!nuevosDetalles)
     {
-        perror("Error al realocar memoria");
-        if (detalles != NULL)
-        {
-            free(detalles); // Solo liberar si ya existían detalles
-        }
-        return 0; // Indicar error
+        perror("Error al asignar memoria");
+        free(detalles);
+        return 0;
     }
 
-    // Agregar el nuevo detalle al final del arreglo
     nuevosDetalles[numDetalles] = nuevoDetalle;
     numDetalles++;
 
-    // Guardar los detalles actualizados
-    if (!guardarDetallesPedidos(nombreArchivo, nuevosDetalles, numDetalles))
-    {
-        free(nuevosDetalles);
-        return 0; // Indicar error si no se pudo guardar
-    }
-
+    int resultado = guardarDetallesPedidos(nombreArchivo, nuevosDetalles, numDetalles);
     free(nuevosDetalles);
-    return 1; // Indicar éxito
+    return resultado;
 }
 
-// Función para modificar un detalle de pedido existente
+// Modificar un detalle de pedido existente
 int modificarDetallePedido(const char *nombreArchivo, int id, DetallePedido nuevoDetalle)
 {
     int numDetalles;
     DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
+    if (!detalles)
+    {
+        return 0;
+    }
 
+    int encontrado = 0;
     for (int i = 0; i < numDetalles; i++)
     {
         if (detalles[i].id == id)
         {
             detalles[i] = nuevoDetalle;
-            guardarDetallesPedidos(nombreArchivo, detalles, numDetalles);
-            free(detalles);
-            return 1; // Modificación exitosa
-        }
-    }
-
-    free(detalles);
-    return 0; // Detalle de pedido no encontrado
-}
-
-// Función para eliminar un detalle de pedido
-int eliminarDetallePedido(const char *nombreArchivo, int id)
-{
-    int numDetalles;
-    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
-
-    int indiceEliminar = -1;
-    for (int i = 0; i < numDetalles; i++)
-    {
-        if (detalles[i].id == id)
-        {
-            indiceEliminar = i;
+            encontrado = 1;
             break;
         }
     }
 
-    if (indiceEliminar != -1)
+    if (!encontrado)
     {
-        // Mover los elementos a la izquierda del elemento eliminado
-        for (int i = indiceEliminar; i < numDetalles - 1; i++)
-        {
-            detalles[i] = detalles[i + 1];
-        }
-
-        // Reducir el tamaño del arreglo
-        numDetalles--;
-
-        // Guardar los detalles actualizados
-        guardarDetallesPedidos(nombreArchivo, detalles, numDetalles);
-
         free(detalles);
-        return 1; // Eliminación exitosa
+        return 0;
     }
 
+    int resultado = guardarDetallesPedidos(nombreArchivo, detalles, numDetalles);
     free(detalles);
-    return 0; // Detalle de pedido no encontrado
+    return resultado;
 }
+
+// Eliminar un detalle de pedido
+int eliminarDetallePedido(const char *nombreArchivo, int id)
+{
+    int numDetalles;
+    DetallePedido *detalles = cargarDetallesPedidos(nombreArchivo, &numDetalles);
+    if (!detalles || numDetalles == 0)
+    {
+        return 0;
+    }
+
+    int encontrado = 0;
+    for (int i = 0; i < numDetalles; i++)
+    {
+        if (detalles[i].id == id)
+        {
+            encontrado = 1;
+            for (int j = i; j < numDetalles - 1; j++)
+            {
+                detalles[j] = detalles[j + 1];
+            }
+            break;
+        }
+    }
+
+    if (!encontrado)
+    {
+        free(detalles);
+        return 0;
+    }
+
+    numDetalles--;
+    int resultado = guardarDetallesPedidos(nombreArchivo, detalles, numDetalles);
+    free(detalles);
+    return resultado;
+}
+
+
+//
+// USUARIOS
+//
 
 // Función para cargar los usuarios desde el archivo binario
 int cargarUsuarios(Usuario usuarios[], int maxUsuarios) {

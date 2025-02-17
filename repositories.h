@@ -83,7 +83,7 @@ Producto* buscarProductosPorCategoria(const char* nombreArchivo, const char* cat
 
 int guardarDetallesPedidos(const char* nombreArchivo, DetallePedido* detalles, int numDetalles);
 DetallePedido* cargarDetallesPedidos(const char* nombreArchivo, int* numDetalles);
-DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido);
+DetallePedido* buscarDetallesPorPedido(const char* nombreArchivo, int idPedido, int *numResultados);
 int agregarDetallePedido(const char* nombreArchivo, DetallePedido nuevoDetalle);
 int modificarDetallePedido(const char* nombreArchivo, int id, DetallePedido nuevoDetalle);
 int eliminarDetallePedido(const char* nombreArchivo, int id);

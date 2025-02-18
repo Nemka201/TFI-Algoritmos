@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 void mostrarMenuPedido()
 {
@@ -60,21 +61,10 @@ void agregarPedidoMenu()
     // Obtener el último ID registrado
     int ultimoId = obtenerUltimoIdPedido(FILE_PEDIDO);
     nuevoPedido.id = (ultimoId == -1) ? 0 : ultimoId + 1;
-
     printf("ID: %d\n", nuevoPedido.id);
-
     // Solicitar ID de la mesa asociada al pedido
     int idMesa;
-    while (1) {
-        printf("Ingrese el ID de la mesa: ");
-        if (scanf("%d", &idMesa) != 1) {
-            printf("Error: Ingrese un número válido.\n");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
-        }
-    }
-
+    idMesa=validarNum("Ingrese el ID de la mesa: ");
     // Buscar la mesa por ID en el archivo binario
     Mesa mesaEncontrada = buscarMesaPorId(FILE_MESAS, idMesa);
     if (mesaEncontrada.id == 0) {
@@ -116,26 +106,17 @@ void agregarPedidoMenu()
     // Guardar el pedido en el archivo binario
     if (agregarPedido(FILE_PEDIDO, nuevoPedido)) {
         printf("Pedido agregado correctamente con ID %d.\n", nuevoPedido.id);
+        esperarTecla();
     } else {
         printf("Error al agregar el pedido.\n");
+        esperarTecla();
     }
 }
 void buscarPedidoMenu()
 {
     int idPedido;
-
-    while (1) {
-        printf("Ingrese el ID del pedido a buscar: ");
-        if (scanf("%d", &idPedido) != 1) {
-            printf("Error: Ingrese un número válido.\n");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
-        }
-    }
-
+    idPedido = validarNum("Ingrese el ID del pedido a buscar: ");
     Pedido pedidoEncontrado = buscarPedidoPorId(FILE_PEDIDO, idPedido);
-
     if (pedidoEncontrado.id != 0)
     {
         printf("\n-------------------------------------\n");
@@ -147,35 +128,26 @@ void buscarPedidoMenu()
         printf("Disponibilidad: %s\n", pedidoEncontrado.estado);
         printf("Fecha y hora: %s\n", pedidoEncontrado.fechaHora);
         printf("-------------------------------------\n");
+        esperarTecla();
     }
     else
     {
         printf("No se encontro ningun pedido con el ID %d.\n", idPedido);
+        esperarTecla();
     }
 }
 void modificarPedidoMenu()
 {
     int id, idMesaAux;
     Pedido pedidoActual, nuevoPedido;
-
-    while (1) {
-        printf("Ingrese el ID del pedido a modificar: ");
-        if (scanf("%d", &id) != 1) {
-            printf("Error: Ingrese un número válido.\n");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
-        }
-    }
-
+    id=validarNum("Ingrese el ID del pedido a modificar: ");
     pedidoActual = buscarPedidoPorId(FILE_PEDIDO, id);
     if (pedidoActual.id == 0)
     {
         printf("Pedido no encontrado\n");
         return;
     }
-    while (getchar() != '\n')
-        ; // Limpiar buffer después de scanf
+    while (getchar() != '\n'); // Limpiar buffer después de scanf
     // Copiar los datos del pedido actual al nuevo producto
     idMesaAux = pedidoActual.mesa.id;
     nuevoPedido = pedidoActual;
@@ -183,7 +155,7 @@ void modificarPedidoMenu()
     int estado;
     
     do {
-        printf("Estado: ");
+        printf("Estado: \n");
         printf("1. Pendiente\n");
         printf("2. En proceso\n");
         printf("3. Completado\n");
@@ -229,56 +201,46 @@ void modificarPedidoMenu()
         if (!modificarPedido(FILE_PEDIDO, id, nuevoPedido))
         {
             printf("Error al modificar el pedido\n");
+            esperarTecla();
         }
         else
         {
             printf("Pedido modificado correctamente\n");
+            esperarTecla();
         }
     }
     else
     {
         printf("No se realizaron cambios en el pedido\n");
+        esperarTecla();
     }
 }
 void eliminarPedidoMenu()
 {
     int id;
-    while (1) {
-        printf("Ingrese el ID del pedido a eliminar: ");
-        if (scanf("%d", &id) != 1) {
-            printf("Error: Ingrese un número válido.\n");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
-        }
-    }
+    id=validarNum("Ingrese el ID del pedido a eliminar: ");
     if (eliminarPedido(FILE_PEDIDO, id))
     {
         printf("Pedido eliminado correctamente.\n");
+        esperarTecla();
     }
     else
     {
         printf("Error: No se pudo eliminar el pedido.\n");
+        esperarTecla();
     }
 }
 void buscarPedidosPorMesaMenu()
 {
     int idMesa;
-    while (1) {
-        printf("Ingrese el ID de la mesa a consultar: ");
-        if (scanf("%d", &idMesa) != 1) {
-            printf("Error: Ingrese un número válido.\n");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
-        }
-    }
+    idMesa=validarNum("Ingrese el ID de la mesa a consultar: ");
     int numPedidos;
     Pedido *pedidosMesa = buscarPedidosPorMesa(FILE_PEDIDO, idMesa, &numPedidos);
 
     if (pedidosMesa == NULL)
     {
         printf("No se encontraron pedidos para la mesa %d.\n", idMesa);
+        esperarTecla();
         return;
     }
 
@@ -295,30 +257,24 @@ void buscarPedidosPorMesaMenu()
         printf("Fecha y hora: %s\n", pedidosMesa[i].fechaHora);
         printf("-------------------------------------\n");
     }
-
     free(pedidosMesa);
+    esperarTecla();
 }
 void calcularTotalPedidoMenu()
 {
     int idPedido;
     float totalPedido;
-    while (1) {
-        printf("Ingrese el ID del pedido a calcular: ");
-        if (scanf("%d", &idPedido) != 1) {
-            printf("Error: Ingrese un número válido.\n");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
-        }
-    }
+    idPedido=validarNum("Ingrese el ID del pedido a calcular: ");
     totalPedido = calcularTotalPedido(FILE_DETALLES, idPedido);
     if (totalPedido > 0.0f)
     {
         printf("El total del pedido %d es: %.2f\n", idPedido, totalPedido);
+        esperarTecla();
     }
     else
     {
         printf("No se pudo calcular el total del pedido.\n");
+        esperarTecla();
     }
 }
 void mostrarPedidosConTotales()
@@ -344,6 +300,6 @@ void mostrarPedidosConTotales()
         printf("Total a pagar: %.2f\n", total);
         printf("-------------------------------------------------\n");
     }
-
     free(pedidos);
+    esperarTecla();
 }

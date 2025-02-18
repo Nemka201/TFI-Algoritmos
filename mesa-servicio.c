@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
+#include <string.h>
+#include <ctype.h>
 #define FILE_MESAS "mesas.bin"
 
 // Función para reservar una mesa
@@ -30,7 +31,6 @@ int reservarMesa(int idMesa) {
     printf("Error: No se encontró la mesa %d.\n", idMesa);
     return 0; // Mesa no encontrada
 }
-
 // Función para liberar una mesa
 int liberarMesa(int idMesa) {
     int numMesas;
@@ -56,7 +56,6 @@ int liberarMesa(int idMesa) {
     printf("Error: No se encontró la mesa %d.\n", idMesa);
     return 0; // Mesa no encontrada
 }
-
 // Función para mostrar la disponibilidad de las mesas
 void mostrarDisponibilidadMesas() {
     int numMesas;
@@ -71,7 +70,6 @@ void mostrarDisponibilidadMesas() {
 
     free(mesas); // Liberar la memoria asignada
 }
-
 // Función para mostrar el menú
 void mostrarMenuMesas() {
     printf("\n--- Menu de Gestion de Mesas ---\n");
@@ -83,24 +81,9 @@ void mostrarMenuMesas() {
     printf("6. Volver\n");
     printf("Seleccione una opcion: ");
 }
-
 // Función para mostrar la disponibilidad de las mesas
 void accionMostrarDisponibilidad() {
     mostrarDisponibilidadMesas();
-}
-
-int validarNum(const char *mensaje) {
-    int Num;
-    while (1) {
-        printf("%s", mensaje); // Usamos el mensaje recibido como argumento
-        if (scanf("%d", &Num) != 1) {
-            printf("Error: Ingrese un número válido.\n");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
-        }
-    }
-    return Num;
 }
 // Función para reservar una mesa
 void accionReservarMesa() {
@@ -126,7 +109,6 @@ void accionAgregarMesa() {
     printf("3. Planta-Alta\n");
     
     int opcion;
-    scanf("%d", &opcion);
     while (1) {
         if (scanf("%d", &opcion) != 1) {
             printf("Error: Ingrese un número válido.\n");
@@ -150,8 +132,10 @@ void accionAgregarMesa() {
 
     if (agregarMesa(FILE_MESAS, nuevaMesa)) {
         printf("Mesa agregada con exito.\n");
+        esperarTecla();
     } else {
         printf("Error al agregar la mesa.\n");
+        esperarTecla();
     }
 }
 // Función para buscar una mesa por ID

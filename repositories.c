@@ -382,7 +382,6 @@ int eliminarPedido(const char *nombreArchivo, int id)
 
     if (contador == 0) // No hay pedidos para la mesa
     {
-        printf("No se encontraron pedidos para la mesa %d.\n", idMesa);
         free(pedidos);
         *numPedidos = 0;
         return NULL;
@@ -441,7 +440,7 @@ float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
 
     if (!encontrado)
     {
-        printf("Pedido con ID %d no encontrado.\n", idPedido);
+        // printf("Pedido con ID %d no encontrado.\n", idPedido);
         return 0.0f;
     }
 
@@ -883,4 +882,23 @@ void guardarUsuarios(Usuario usuarios[], int cantidadUsuarios) {
     }
     fwrite(usuarios, sizeof(Usuario), cantidadUsuarios, file);
     fclose(file);
+}
+//Funcion Auxiliar
+int validarNum(const char *mensaje) {
+    int num;
+    while (1) {
+        printf("%s", mensaje);
+        if (scanf("%d", &num) != 1 || num < 0) {
+            printf("Error: Ingrese un número entero válido.\n");
+            while (getchar() != '\n'); // Limpiar el buffer
+        } else {
+            while (getchar() != '\n'); // Limpiar buffer después de un ingreso correcto
+            return num;
+        }
+    }
+}
+void esperarTecla() {
+    printf("\nPresione Enter para continuar...");
+    while (getchar() != '\n'); // Limpiar buffer si hay caracteres pendientes
+    getchar(); // Esperar que el usuario presione Enter
 }

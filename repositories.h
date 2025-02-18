@@ -95,8 +95,8 @@ int cargarUsuarios(Usuario usuarios[], int maxUsuarios);
 void guardarUsuarios(Usuario usuarios[], int cantidadUsuarios);
 
 // Funciones auxiliares
-
+int validarNum(const char *mensaje);
 int encontrarIndiceLibre(const char* nombreArchivo, int tamEstructura); // Encuentra el siguiente ID disponible
 void imprimirMesa(Mesa mesa); // Imprime los datos de una mesa en pantalla
-
+void esperarTecla();
 #endif

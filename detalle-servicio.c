@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <conio.h>
 #include "detalle-servicio.h"
 
 // Función para mostrar el menú
@@ -61,7 +60,7 @@ int agregarDetallePedidoService()
     // Pedir ID del pedido
     mostrarPedidosConTotales();
     printf("Ingrese el ID del pedido: ");
-    while (getchar() != '\n'); // Limpiar el buffer del salto de línea después del scanf
+    getchar(); // Limpiar el buffer del salto de línea después del scanf
     scanf("%d", &pedidoId);
     Pedido pedido = buscarPedidoPorId(FILE_PEDIDOS, pedidoId);
     if (pedido.id == -1)
@@ -72,7 +71,7 @@ int agregarDetallePedidoService()
     mostrarTodosLosProductos();
     // Pedir ID del producto
     printf("Ingrese el ID del producto: ");
-    while (getchar() != '\n'); // Limpiar el buffer del salto de línea después del scanf
+    getchar(); // Limpiar el buffer del salto de línea después del scanf
     scanf("%d", &productoId);
 
     Producto producto = buscarProductoPorId(FILE_PRODUCTOS, productoId);
@@ -84,7 +83,7 @@ int agregarDetallePedidoService()
 
     // Pedir cantidad del producto
     printf("Ingrese la cantidad: ");
-    while (getchar() != '\n'); // Limpiar el buffer del salto de línea después del scanf
+    getchar(); // Limpiar el buffer del salto de línea después del scanf
     scanf("%d", &cantidad);
 
     if (cantidad <= 0)
@@ -141,36 +140,32 @@ void mostrarDetallesPedido()
     mostrarPedidosConTotales(); // Muestra los pedidos con totales antes de pedir el ID
 
     int pedidoId;
-    printf("\nIngrese el ID del Pedido: ");
-    scanf("%d", &pedidoId);
+    pedidoId=validarNum("\nIngrese el ID del Pedido: ");
+    int numResultados;
+    DetallePedido *detalles = buscarDetallesPorPedido(FILE_DETALLES, pedidoId, &numResultados);
+
+    if (!detalles || numResultados == 0)
     {
-        int numResultados;
-        DetallePedido *detalles = buscarDetallesPorPedido(FILE_DETALLES, pedidoId, &numResultados);
-
-        if (!detalles || numResultados == 0 || pedidoId<0 )
-        {
-            printf("No se encontraron detalles para el pedido ID: %d\n", pedidoId);
-            system("pause");
-            return;
-        }
-
-        printf("\nDetalles del Pedido ID: %d\n", pedidoId);
-        printf("-------------------------------------------------\n");
-        double total = 0.0;
-
-        for (int i = 0; i < numResultados; i++)
-        {
-            printf("Producto: %s\n", detalles[i].producto.nombre);
-            printf("Cantidad: %d\n", detalles[i].cantidad);
-            printf("Precio Unitario: %.2f\n", detalles[i].producto.precio);
-            printf("Subtotal: %.2f\n", detalles[i].subTotalProducto);
-            printf("-------------------------------------------------\n");
-            total += detalles[i].subTotalProducto;
-        }
-
-        printf("Total a pagar: %.2f\n", total);
-        free(detalles); // Liberar memoria reservada en buscarDetallesPorPedido()
+        printf("No se encontraron detalles para el pedido ID: %d\n", pedidoId);
+        return;
     }
+
+    printf("\nDetalles del Pedido ID: %d\n", pedidoId);
+    printf("-------------------------------------------------\n");
+    double total = 0.0;
+
+    for (int i = 0; i < numResultados; i++)
+    {
+        printf("Producto: %s\n", detalles[i].producto.nombre);
+        printf("Cantidad: %d\n", detalles[i].cantidad);
+        printf("Precio Unitario: %.2f\n", detalles[i].producto.precio);
+        printf("Subtotal: %.2f\n", detalles[i].subTotalProducto);
+        printf("-------------------------------------------------\n");
+        total += detalles[i].subTotalProducto;
+    }
+
+    printf("Total a pagar: %.2f\n", total);
+    free(detalles); // Liberar memoria reservada en buscarDetallesPorPedido()
 }
 
 void mostrarTodosLosDetallesPedidos()

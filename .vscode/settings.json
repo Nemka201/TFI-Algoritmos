@@ -63,6 +63,7 @@
     "stdio.h": "c",
     "pedido-servicio.h": "c",
     "repositories.h": "c",
-    "stdbool.h": "c"
+    "stdbool.h": "c",
+    "detalle-servicio.h": "c"
   }
 }

@@ -88,7 +88,7 @@ void agregarPedidoMenu()
     // reservarMesa(mesaEncontrada.id);
     nuevoPedido.mesa = mesaEncontrada;
 
-    getchar();
+    while (getchar() != '\n');
 
     // Obtener la fecha y hora actual
     time_t now = time(0);

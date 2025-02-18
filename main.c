@@ -16,7 +16,6 @@ void inputMenuDetalle();
 
 int main()
 {
-    setlocale(LC_ALL, "es_ES"); // Configura la localización a español de España
     // inputMenuLogin();
     mainMenu();
     return 0;
@@ -28,7 +27,6 @@ void mainMenu()
 
     do
     {
-        system("pause");
         system("cls");
         printf("\nMenu Principal\n");
         printf("1. Ventas \n");
@@ -69,6 +67,7 @@ void inputMenuMesas()
 
     do
     {
+        system("cls");
         mostrarMenuMesas();
         scanf("%d", &opcion);
 
@@ -105,6 +104,7 @@ void inputMenuProductos()
 
     do
     {
+        system("cls");
         mostrarMenuProducto();
         scanf("%d", &opcion);
 
@@ -140,6 +140,7 @@ void inputMenuPedido()
     int opcion;
     do
     {
+        system("cls");
         mostrarMenuPedido();
         scanf("%d", &opcion);
 
@@ -184,6 +185,7 @@ void inputMenuDetalle()
     int opcion;
     do
     {
+        system("cls");
         mostrarMenuDetalle();
         scanf("%d", &opcion);
 

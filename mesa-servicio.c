@@ -89,30 +89,37 @@ void accionMostrarDisponibilidad() {
     mostrarDisponibilidadMesas();
 }
 
+int validarNum(const char *mensaje) {
+    int Num;
+    while (1) {
+        printf("%s", mensaje); // Usamos el mensaje recibido como argumento
+        if (scanf("%d", &Num) != 1) {
+            printf("Error: Ingrese un número válido.\n");
+            while (getchar() != '\n'); // Limpiar el buffer de entrada
+        } else {
+            break;
+        }
+    }
+    return Num;
+}
 // Función para reservar una mesa
 void accionReservarMesa() {
     int idMesa;
-    printf("Ingrese el ID de la mesa a reservar: ");
-    scanf("%d", &idMesa);
+    idMesa = validarNum("Ingrese el ID de la mesa a reservar: ");
     reservarMesa(idMesa);
 }
-
 // Función para liberar una mesa
 void accionLiberarMesa() {
     int idMesa;
-    printf("Ingrese el ID de la mesa a liberar: ");
-    scanf("%d", &idMesa);
+    idMesa = validarNum("Ingrese el ID de la mesa a liberar: ");
     liberarMesa(idMesa);
 }
-
 // Función para agregar una nueva mesa
 void accionAgregarMesa() {
     Mesa nuevaMesa;
     printf("Ingrese los datos de la nueva mesa:\n");
-    printf("ID: ");
-    scanf("%d", &nuevaMesa.id);
-    printf("Capacidad: ");
-    scanf("%d", &nuevaMesa.capacidad);
+    nuevaMesa.id=validarNum("ID: ");
+    nuevaMesa.capacidad=validarNum("Capacidad: ");
     printf("Seleccione la ubicacion:\n");
     printf("1. Terraza\n");
     printf("2. Planta-Baja\n");
@@ -120,7 +127,17 @@ void accionAgregarMesa() {
     
     int opcion;
     scanf("%d", &opcion);
-    getchar(); // Limpiar el buffer del salto de línea después del scanf
+    while (1) {
+        if (scanf("%d", &opcion) != 1) {
+            printf("Error: Ingrese un número válido.\n");
+            printf("Seleccione una opcion: ");
+            while (getchar() != '\n'); // Limpiar el buffer de entrada
+        } else {
+            break;
+        }
+        
+    }
+    
     switch(opcion) {
         case 1: strcpy(nuevaMesa.ubicacion, "Terraza"); break;
         case 2: strcpy(nuevaMesa.ubicacion, "Planta-Baja"); break;
@@ -137,12 +154,10 @@ void accionAgregarMesa() {
         printf("Error al agregar la mesa.\n");
     }
 }
-
 // Función para buscar una mesa por ID
 void accionBuscarMesaPorId() {
     int idMesa;
-    printf("Ingrese el ID de la mesa a buscar: ");
-    scanf("%d", &idMesa);
+    idMesa=validarNum("Ingrese el ID de la mesa a buscar: ");
     Mesa mesaEncontrada = buscarMesaPorId(FILE_MESAS, idMesa);
 
     if (mesaEncontrada.id != 0) {

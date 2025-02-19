@@ -12,6 +12,7 @@ void mostrarMenuLogin() {
     printf("\n--- Menu de Login ---\n");
     printf("1. Iniciar sesion\n");
     printf("2. Registrar un nuevo usuario\n");
+    printf("3. Salir\n");
     printf("Ingrese una opcion: ");
 }
 // Funcion para manejar menu de Login
@@ -24,7 +25,7 @@ void inputMenuLogin(){
         mostrarMenuLogin();
         int opcionLogin;
     
-        scanf("%d", &opcionLogin);
+        opcionLogin = validarNum("");
     
         if (opcionLogin == 1) {
             loginExitoso = iniciarSesion(usuarios, cantidadUsuarios);
@@ -33,6 +34,8 @@ void inputMenuLogin(){
             registrarUsuario(usuarios, &cantidadUsuarios, MAX_USUARIOS);
             guardarUsuarios(usuarios, cantidadUsuarios);
             printf("\n");
+        } else {
+            exit(0);
         }
     }
 }
@@ -185,7 +188,6 @@ void registrarUsuario(Usuario usuarios[], int* cantidadUsuarios, int maxUsuarios
     while (getchar() != '\n');
     scanf("%s", nombreCompleto);
     
-
     strcpy(usuarios[*cantidadUsuarios].username, nombreUsuario);
     strcpy(usuarios[*cantidadUsuarios].password, contrasena);
     strcpy(usuarios[*cantidadUsuarios].nombreCompleto, nombreCompleto);

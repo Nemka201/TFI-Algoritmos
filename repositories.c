@@ -922,7 +922,7 @@ int validarNum(const char *mensaje) {
     while (1) {
         printf("%s", mensaje);
         if (scanf("%d", &num) != 1 || num < 0) {
-            printf("Error: Ingrese un número entero válido.\n");
+            printf("Error: Ingrese un numero entero valido.\n");
             while (getchar() != '\n'); // Limpiar el buffer
         } else {
             return num;

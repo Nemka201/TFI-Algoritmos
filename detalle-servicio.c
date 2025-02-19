@@ -59,9 +59,7 @@ int agregarDetallePedidoService()
 
     // Pedir ID del pedido
     mostrarPedidosConTotales();
-    printf("Ingrese el ID del pedido: ");
-    getchar(); // Limpiar el buffer del salto de línea después del scanf
-    scanf("%d", &pedidoId);
+    pedidoId = validarNum("Ingrese el ID del pedido: ");
     Pedido pedido = buscarPedidoPorId(FILE_PEDIDOS, pedidoId);
     if (pedido.id == -1)
     {
@@ -70,9 +68,7 @@ int agregarDetallePedidoService()
     }
     mostrarTodosLosProductos();
     // Pedir ID del producto
-    printf("Ingrese el ID del producto: ");
-    getchar(); // Limpiar el buffer del salto de línea después del scanf
-    scanf("%d", &productoId);
+    productoId = validarNum("Ingrese el ID del producto: ");
 
     Producto producto = buscarProductoPorId(FILE_PRODUCTOS, productoId);
     if (producto.id == -1)
@@ -82,9 +78,7 @@ int agregarDetallePedidoService()
     }
 
     // Pedir cantidad del producto
-    printf("Ingrese la cantidad: ");
-    getchar(); // Limpiar el buffer del salto de línea después del scanf
-    scanf("%d", &cantidad);
+    cantidad = validarNum("Ingrese la cantidad: ");
 
     if (cantidad <= 0)
     {
@@ -140,7 +134,7 @@ void mostrarDetallesPedido()
     mostrarPedidosConTotales(); // Muestra los pedidos con totales antes de pedir el ID
 
     int pedidoId;
-    pedidoId=validarNum("\nIngrese el ID del Pedido: ");
+    pedidoId = validarNum("\nIngrese el ID del Pedido: ");
     int numResultados;
     DetallePedido *detalles = buscarDetallesPorPedido(FILE_DETALLES, pedidoId, &numResultados);
 
@@ -165,7 +159,7 @@ void mostrarDetallesPedido()
     }
 
     printf("Total a pagar: %.2f\n", total);
-    free(detalles); // Liberar memoria reservada en buscarDetallesPorPedido()
+    free(detalles);
 }
 
 void mostrarTodosLosDetallesPedidos()
@@ -180,7 +174,7 @@ void mostrarTodosLosDetallesPedidos()
     }
 
     printf("\nTodos los detalles de los pedidos:\n");
- printf("\n%-10s %-20s %-10s %-15s\n", "ID Pedido", "Producto", "Cantidad", "Subtotal");
+    printf("\n%-10s %-20s %-10s %-15s\n", "ID Pedido", "Producto", "Cantidad", "Subtotal");
     printf("-------------------------------------------------\n");
 
     for (int i = 0; i < numDetalles; i++) {

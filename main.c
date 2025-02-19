@@ -16,7 +16,7 @@ void inputMenuDetalle();
 
 int main()
 {
-    // inputMenuLogin();
+    inputMenuLogin();
     mainMenu();
     return 0;
 }

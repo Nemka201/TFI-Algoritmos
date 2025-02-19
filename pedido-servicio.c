@@ -19,45 +19,39 @@ void mostrarMenuPedido()
     printf("7. Volver\n");
     printf("Seleccione una opcion: ");
 }
-int obtenerUltimoIdPedido(const char *nombreArchivo)
-{
-    FILE *fp = fopen(nombreArchivo, "rb");
-    if (!fp)
-    {
-        return 0; // Si el archivo no existe, empezamos desde 0
-    }
-
-    int numPedidos;
-    if (fread(&numPedidos, sizeof(int), 1, fp) != 1)
-    {
-        fclose(fp);
-        return 0; // Si no se puede leer el número de pedidos, empezamos desde 0
-    }
-
-    if (numPedidos <= 0)
-    {
-        fclose(fp);
-        return 0; // No hay pedidos registrados
-    }
-
-    // Ir al último pedido
-    fseek(fp, sizeof(int) + (numPedidos - 1) * sizeof(Pedido), SEEK_SET);
-
-    Pedido ultimoPedido;
-    if (fread(&ultimoPedido, sizeof(Pedido), 1, fp) != 1)
-    {
-        fclose(fp);
-        return 0; // Si hay un error, asumimos que no hay pedidos válidos
-    }
-
-    fclose(fp);
-    return ultimoPedido.id;
-}
+// int obtenerUltimoIdPedido(const char *nombreArchivo)
+// {
+//     FILE *fp = fopen(nombreArchivo, "rb");
+//     if (!fp)
+//     {
+//         return 0; // Si el archivo no existe, empezamos desde 0
+//     }
+//     int numPedidos;
+//     if (fread(&numPedidos, sizeof(int), 1, fp) != 1)
+//     {
+//         fclose(fp);
+//         return 0; // Si no se puede leer el número de pedidos, empezamos desde 0
+//     }
+//     if (numPedidos <= 0)
+//     {
+//         fclose(fp);
+//         return 0; // No hay pedidos registrados
+//     }
+//     // Ir al último pedido
+//     fseek(fp, sizeof(int) + (numPedidos - 1) * sizeof(Pedido), SEEK_SET);
+//     Pedido ultimoPedido;
+//     if (fread(&ultimoPedido, sizeof(Pedido), 1, fp) != 1)
+//     {
+//         fclose(fp);
+//         return 0; // Si hay un error, asumimos que no hay pedidos válidos
+//     }
+//     fclose(fp);
+//     return ultimoPedido.id;
+// }
 void agregarPedidoMenu()
 {
     Pedido nuevoPedido;
     getchar();
-
     // Obtener el último ID registrado
     int ultimoId = obtenerUltimoIdPedido(FILE_PEDIDO);
     nuevoPedido.id = (ultimoId == -1) ? 0 : ultimoId + 1;

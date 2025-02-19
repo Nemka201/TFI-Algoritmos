@@ -136,7 +136,40 @@ void crearArchivoPedidos()
         fclose(fp);
     }
 }
+int obtenerUltimoIdPedido(const char *nombreArchivo)
+{
+    FILE *fp = fopen(nombreArchivo, "rb");
+    if (!fp)
+    {
+        return 0; // Si el archivo no existe, empezamos desde 0
+    }
 
+    int numPedidos;
+    if (fread(&numPedidos, sizeof(int), 1, fp) != 1)
+    {
+        fclose(fp);
+        return 0; // Si no se puede leer el número de pedidos, empezamos desde 0
+    }
+
+    if (numPedidos <= 0)
+    {
+        fclose(fp);
+        return 0; // No hay pedidos registrados
+    }
+
+    // Ir al último pedido
+    fseek(fp, sizeof(int) + (numPedidos - 1) * sizeof(Pedido), SEEK_SET);
+
+    Pedido ultimoPedido;
+    if (fread(&ultimoPedido, sizeof(Pedido), 1, fp) != 1)
+    {
+        fclose(fp);
+        return 0; // Si hay un error, asumimos que no hay pedidos válidos
+    }
+
+    fclose(fp);
+    return ultimoPedido.id;
+}
 int guardarPedidos(const char *nombreArchivo, Pedido *pedidos, int numPedidos)
 {
     FILE *fp = fopen(nombreArchivo, "wb");
@@ -892,7 +925,6 @@ int validarNum(const char *mensaje) {
             printf("Error: Ingrese un número entero válido.\n");
             while (getchar() != '\n'); // Limpiar el buffer
         } else {
-            while (getchar() != '\n'); // Limpiar buffer después de un ingreso correcto
             return num;
         }
     }

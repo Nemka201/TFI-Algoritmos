@@ -59,6 +59,7 @@ int eliminarMesa(const char* nombreArchivo, int id);
 
 // Prototipos de funciones para Pedidos
 
+int obtenerUltimoIdPedido(const char *nombreArchivo);
 int guardarPedidos(const char* nombreArchivo, Pedido* pedidos, int numPedidos);
 Pedido* cargarPedidos(const char* nombreArchivo, int* numPedidos);
 Pedido buscarPedidoPorId(const char* nombreArchivo, int id);

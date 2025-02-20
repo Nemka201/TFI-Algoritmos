@@ -4,10 +4,15 @@
 #define FILE_PRODUCTOS "productos.bin"
 #define FILE_PEDIDOS "pedido.bin"
 
-#include "repositories.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include "../repositories/detalle-repositorio.h"
 #include "detalle-servicio.h"
 #include "pedido-servicio.h"
 #include "producto-servicio.h"
+#include "../utilities.h"
 
 // Funciones prototipo
 void mostrarMenuDetalle();

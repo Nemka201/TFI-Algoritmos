@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include "login-servicio.h"
-#include "repositories.h"
-#include <conio.h>
 
 #define MAX_USUARIOS 100
 

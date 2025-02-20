@@ -1,7 +1,13 @@
 #ifndef MESA_SERVICIO_H
 #define MESA_SERVICIO_H
 
-#include "repositories.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+#include "../utilities.h"
+#include "../repositories/mesa-repositorio.h"
 
 // Funciones prototipo
 

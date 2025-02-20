@@ -3,7 +3,15 @@
 #define FILE_PEDIDO "pedido.bin"
 #define FILE_MESAS "mesas.bin"
 #define FILE_DETALLES "detalles.bin"
-#include "repositories.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
+#include "../repositories/pedido-repositorio.h"
+#include "../utilities.h"
 
 // Funciones prototipo
 

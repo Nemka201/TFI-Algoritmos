@@ -1,9 +1,4 @@
 #include "mesa-servicio.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <ctype.h>
 #define FILE_MESAS "mesas.bin"
 
 // Funcion para reservar una mesa

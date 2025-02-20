@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 #include "detalle-servicio.h"
 
 // Funcion para mostrar el menu
@@ -97,6 +93,7 @@ int agregarDetallePedidoService()
 
         return 1;
     }
+    return 0;
 }
 
 // Funcion para mostrar los detalles de un pedido

@@ -39,6 +39,8 @@
   "C_Cpp_Runner.linkerArgs": [],
   "C_Cpp_Runner.includePaths": [
     "${workspaceFolder}",
+    "${workspaceFolder}/repositories",
+    "${workspaceFolder}/services",
     "${workspaceFolder}/include"
   ],
   "C_Cpp_Runner.includeSearch": [
@@ -61,9 +63,16 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "stdio.h": "c",
+    "detalle-servicio.h": "c",
+    "login-servicio.h": "c",
+    "mesa-servicio.h": "c",
     "pedido-servicio.h": "c",
+    "producto.h": "c",
     "repositories.h": "c",
     "stdbool.h": "c",
-    "detalle-servicio.h": "c"
+    "login-repositorio.h": "c",
+    "pedido-repositorio.h": "c",
+    "mesa-repositorio.h": "c",
+    "string.h": "c"
   }
 }

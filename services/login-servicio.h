@@ -1,9 +1,13 @@
-// login-servicio.h
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <conio.h>
 
 #ifndef LOGIN_SERVICIO_H
 #define LOGIN_SERVICIO_H
 
-#include "repositories.h"
+#include "../utilities.h"
+#include "../repositories/login-repositorio.h"
 
 // Declaración de las funciones
 int iniciarSesion(Usuario usuarios[], int cantidadUsuarios);

@@ -1,9 +1,4 @@
 #include "producto-servicio.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <ctype.h>
 
 #define FILE_PRODUCTOS "productos.bin"
 

@@ -1,11 +1,5 @@
 #include "pedido-servicio.h"
 #include "mesa-servicio.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <time.h>
-#include <ctype.h>
 
 void mostrarMenuPedido()
 {

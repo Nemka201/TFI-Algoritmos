@@ -54,20 +54,22 @@ Mesa *cargarMesas(const char *nombreArchivo, int *numMesas)
 // Funcion para buscar una mesa por su ID
 Mesa buscarMesaPorId(const char *nombreArchivo, int id)
 {
-    Mesa mesaEncontrada;
+    Mesa mesaEncontrada = {0};
     int numMesas;
     Mesa *mesas = cargarMesas(nombreArchivo, &numMesas);
-
-    for (int i = 0; i < numMesas; i++)
+    int i = 0;
+    if (mesas)
     {
-        if (mesas[i].id == id)
+        for (int i = 0; i < numMesas; i++)
         {
-            mesaEncontrada = mesas[i];
-            break;
+            if (mesas[i].id == id)
+            {
+                mesaEncontrada = mesas[i];
+                break;
+            }
         }
+        free(mesas); // Liberar la memoria asignada
     }
-
-    free(mesas); // Liberar la memoria asignada
     return mesaEncontrada;
 }
 
@@ -520,23 +522,24 @@ Producto *cargarProductos(const char *nombreArchivo, int *numProductos)
 // Funcion para buscar un producto por su ID
 Producto buscarProductoPorId(const char *nombreArchivo, int id)
 {
+    Producto productoEncontrado = {0};
     int numProductos;
     Producto *productos = cargarProductos(nombreArchivo, &numProductos);
 
-    // Busqueda secuencial (puedes implementar busqueda binaria si los productos estan ordenados)
-    for (int i = 0; i < numProductos; i++)
+    // Busqueda secuencial
+    if (productos)
     {
-        if (productos[i].id == id)
+        for (int i = 0; i < numProductos; i++)
         {
-            Producto productoEncontrado = productos[i];
-            free(productos);
-            return productoEncontrado;
+            if (productos[i].id == id)
+            {
+                productoEncontrado = productos[i];
+                break;
+            }
         }
+        free(productos);
     }
-
-    free(productos);
-    Producto productoVacio = {0}; // Crear un producto vacio para indicar que no se encontro
-    return productoVacio;
+    return productoEncontrado;
 }
 
 // Funcion para agregar un nuevo producto

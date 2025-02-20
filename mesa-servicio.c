@@ -18,10 +18,12 @@ int reservarMesa(int idMesa) {
                 guardarMesas(FILE_MESAS, mesas, numMesas); // Guardar cambios
                 free(mesas);
                 printf("Mesa %d reservada con exito.\n", idMesa);
+                esperarTecla();
                 return 1; // Reserva exitosa
             } else {
                 free(mesas);
                 printf("La mesa %d no esta disponible.\n", idMesa);
+                esperarTecla();
                 return 0; // Mesa no disponible
             }
         }
@@ -29,6 +31,7 @@ int reservarMesa(int idMesa) {
 
     free(mesas);
     printf("Error: No se encontro la mesa %d.\n", idMesa);
+    esperarTecla();
     return 0; // Mesa no encontrada
 }
 // Funcion para liberar una mesa
@@ -43,10 +46,12 @@ int liberarMesa(int idMesa) {
                 guardarMesas(FILE_MESAS, mesas, numMesas); // Guardar cambios
                 free(mesas);
                 printf("Mesa %d liberada con exito.\n", idMesa);
+                esperarTecla();
                 return 1; // Liberacion exitosa
             } else {
                 free(mesas);
                 printf("La mesa %d no esta reservada.\n", idMesa);
+                esperarTecla();
                 return 0; // Mesa no reservada
             }
         }
@@ -54,6 +59,7 @@ int liberarMesa(int idMesa) {
 
     free(mesas);
     printf("Error: No se encontro la mesa %d.\n", idMesa);
+    esperarTecla();
     return 0; // Mesa no encontrada
 }
 // Funcion para mostrar la disponibilidad de las mesas
@@ -67,8 +73,8 @@ void mostrarDisponibilidadMesas() {
         printf("Mesa %d: %s\n", mesas[i].id, mesas[i].disponible ? "Disponible" : "Reservada");
         printf("-------------------------------------\n");
     }
-
     free(mesas); // Liberar la memoria asignada
+    esperarTecla();
 }
 // Funcion para mostrar el menu
 void mostrarMenuMesas() {
@@ -98,43 +104,65 @@ void accionLiberarMesa() {
     liberarMesa(idMesa);
 }
 // Funcion para agregar una nueva mesa
-void accionAgregarMesa() {
-    Mesa nuevaMesa;
+void accionAgregarMesa()
+{
+    Mesa nuevaMesa, mesaAuxiliar;
     printf("Ingrese los datos de la nueva mesa:\n");
     nuevaMesa.id=validarNum("ID: ");
-    nuevaMesa.capacidad=validarNum("Capacidad: ");
-    printf("Seleccione la ubicacion:\n");
-    printf("1. Terraza\n");
-    printf("2. Planta-Baja\n");
-    printf("3. Planta-Alta\n");
+    mesaAuxiliar = buscarMesaPorId(FILE_MESAS, nuevaMesa.id);
     
-    int opcion;
-    while (1) {
-        if (scanf("%d", &opcion) != 1) {
-            printf("Error: Ingrese un numero valido.\n");
-            printf("Seleccione una opcion: ");
-            while (getchar() != '\n'); // Limpiar el buffer de entrada
-        } else {
-            break;
+    if (mesaAuxiliar.id != nuevaMesa.id)
+    {
+        nuevaMesa.capacidad=validarNum("Capacidad: ");
+        printf("Seleccione la ubicacion:\n");
+        printf("1. Terraza\n");
+        printf("2. Planta-Baja\n");
+        printf("3. Planta-Alta\n");
+        int opcion;
+        while (1)
+        {
+            if (scanf("%d", &opcion) != 1)
+            {
+                printf("Error: Ingrese un numero valido.\n");
+                printf("Seleccione una opcion: ");
+                while (getchar() != '\n')
+                    ; // Limpiar el buffer de entrada
+            }
+            else
+            {
+                break;
+            }
         }
-        
-    }
-    
-    switch(opcion) {
-        case 1: strcpy(nuevaMesa.ubicacion, "Terraza"); break;
-        case 2: strcpy(nuevaMesa.ubicacion, "Planta-Baja"); break;
-        case 3: strcpy(nuevaMesa.ubicacion, "Planta-Alta"); break;
-        default: 
+
+        switch (opcion)
+        {
+        case 1:
+            strcpy(nuevaMesa.ubicacion, "Terraza");
+            break;
+        case 2:
+            strcpy(nuevaMesa.ubicacion, "Planta-Baja");
+            break;
+        case 3:
+            strcpy(nuevaMesa.ubicacion, "Planta-Alta");
+            break;
+        default:
             printf("Opcion invalida. Se asignara 'Planta-Baja' por defecto.\n");
             strcpy(nuevaMesa.ubicacion, "Planta-Baja");
-    }
-    nuevaMesa.disponible = true; // Por defecto, la mesa esta disponible
+        }
+        nuevaMesa.disponible = true; // Por defecto, la mesa esta disponible
 
-    if (agregarMesa(FILE_MESAS, nuevaMesa)) {
-        printf("Mesa agregada con exito.\n");
-        esperarTecla();
-    } else {
-        printf("Error al agregar la mesa.\n");
+        if (agregarMesa(FILE_MESAS, nuevaMesa))
+        {
+            printf("Mesa agregada con exito.\n");
+            esperarTecla();
+        }
+        else
+        {
+            printf("Error al agregar la mesa.\n");
+            esperarTecla();
+        }
+    }else{
+        printf("Id existente.");
         esperarTecla();
     }
 }
@@ -152,8 +180,10 @@ void accionBuscarMesaPorId() {
         printf("Ubicacion: %s\n", mesaEncontrada.ubicacion);
         printf("Disponibilidad: %s\n", mesaEncontrada.disponible ? "Disponible" : "Reservada");
         printf("-------------------------------------\n");
+        esperarTecla();
     } else {
         printf("No se encontro ninguna mesa con el ID %d.\n", idMesa);
+        esperarTecla();
     }
 }
 

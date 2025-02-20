@@ -31,6 +31,7 @@ int agregarDetallePedidoService()
         if (pedido.id == -1)
         {
             printf("Pedido no encontrado.\n");
+            esperarTecla();
             return 0;
         }
         mostrarTodosLosProductos();
@@ -41,6 +42,7 @@ int agregarDetallePedidoService()
         if (producto.id == -1)
         {
             printf("Producto no encontrado.\n");
+            esperarTecla();
             return 0;
         }
 
@@ -50,6 +52,7 @@ int agregarDetallePedidoService()
         if (cantidad <= 0)
         {
             printf("La cantidad debe ser mayor a 0.\n");
+            esperarTecla();
             return 0;
         }
 

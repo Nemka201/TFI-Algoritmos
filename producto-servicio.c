@@ -74,8 +74,8 @@ void mostrarTodosLosProductos()
                productos[i].categoria,
                productos[i].stock);
     }
-
     free(productos);
+    esperarTecla();
 }
 void modificarStockProductoMenu()
 {
@@ -122,6 +122,7 @@ void modificarProductoMenu()
     if (productoActual.id == 0)
     {
         printf("Producto no encontrado\n");
+        esperarTecla();
         return;
     }
     while (getchar() != '\n'); // Limpiar buffer despues de scanf
@@ -133,27 +134,6 @@ void modificarProductoMenu()
     nuevoProducto.precio = validarFloat("Ingrese el nuevo precio del producto: ");
     nuevoProducto.stock = validarNum("Ingrese el nuevo stock del producto: ");
     obtenerEntradaValida(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), "Ingrese la nueva categoria: ");
-
-
-    // printf("Ingrese los nuevos datos del producto:\n");
-    // printf("Nombre: ");
-    // fgets(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), stdin);
-    // // Eliminar el salto de linea al final del nombre, si existe
-    // nuevoProducto.nombre[strcspn(nuevoProducto.nombre, "\n")] = '\0';
-
-    // printf("Descripcion: ");
-    // fgets(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), stdin);
-    // nuevoProducto.descripcion[strcspn(nuevoProducto.descripcion, "\n")] = '\0';
-
-    // printf("Precio: ");
-    // scanf("%f", &nuevoProducto.precio);
-
-    // printf("Stock: ");
-    // scanf("%d", &nuevoProducto.stock);
-
-    // printf("Categoria: ");
-    // fgets(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), stdin);
-    // nuevoProducto.categoria[strcspn(nuevoProducto.categoria, "\n")] = '\0';
 
     // Solo si alguno de los datos fue modificado, actualizar el producto
     if (strcmp(nuevoProducto.nombre, productoActual.nombre) != 0 ||
@@ -178,52 +158,33 @@ void modificarProductoMenu()
 }
 void agregarProductoMenu()
 {
-    Producto nuevoProducto;
+    Producto nuevoProducto, productoAuxiliar;
     printf("\nIngrese los datos del nuevo producto:\n");
     nuevoProducto.id=validarNum("ID: ");
-    obtenerEntradaValida(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), "Nombre: ");
-    obtenerEntradaValida(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), "Descripcion: ");
-    nuevoProducto.precio = validarFloat("Ingrese el nuevo precio del producto: ");
-    nuevoProducto.stock = validarNum("Ingrese el nuevo stock del producto: ");
-    obtenerEntradaValida(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), "Ingrese la nueva categoria: ");
-     
-    // printf("Nombre: ");
-    // fgets(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), stdin);
-    // // Eliminar el salto de linea al final del nombre, si existe
-    // nuevoProducto.nombre[strcspn(nuevoProducto.nombre, "\n")] = '\0';
-    // printf("Descripcion: ");
-    // nuevoProducto.descripcion[strcspn(nuevoProducto.descripcion, "\n")] = '\0';
-    // fgets(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), stdin);
-    // nuevoProducto.descripcion[strcspn(nuevoProducto.descripcion, "\n")] = '\0';
-    // printf("Precio: ");
-    // scanf("%f", &nuevoProducto.precio);
-    // printf("Stock: ");
-    // scanf("%d", &nuevoProducto.stock);
-    // printf("Categoria (1: Bebidas, 2: Alimentos): ");
-    // int categoria;
-    // scanf("%d", &categoria);
-    // if (categoria == 1)
-    // {
-    //     strcpy(nuevoProducto.categoria, "Bebidas");
-    // }
-    // else if (categoria == 2)
-    // {
-    //     strcpy(nuevoProducto.categoria, "Alimentos");
-    // }
-    // else
-    // {
-    //     printf("Categoria invalida\n");
-    //     return;
-    // }
+    productoAuxiliar = buscarProductoPorId(FILE_PRODUCTOS, nuevoProducto.id);
 
-    if (!agregarProducto(FILE_PRODUCTOS, nuevoProducto))
+    if (productoAuxiliar.id != nuevoProducto.id)
     {
-        printf("Error al agregar el producto\n");
+        obtenerEntradaValida(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), "Nombre: ");
+        obtenerEntradaValida(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), "Descripcion: ");
+        nuevoProducto.precio = validarFloat("Ingrese el nuevo precio del producto: ");
+        nuevoProducto.stock = validarNum("Ingrese el nuevo stock del producto: ");
+        obtenerEntradaValida(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), "Ingrese la nueva categoria: ");
+        if (!agregarProducto(FILE_PRODUCTOS, nuevoProducto))
+        {
+            printf("Error al agregar el producto\n");
+            esperarTecla();
+        }
+        else
+        {
+            printf("Producto agregado correctamente\n");
+            esperarTecla();
+        }
+    }else{
+        printf("Id existente.");
+        esperarTecla();
     }
-    else
-    {
-        printf("Producto agregado correctamente\n");
-    }
+
 }
 void buscarProductoMenu()
 {
@@ -231,4 +192,7 @@ void buscarProductoMenu()
     int id;
     id=validarNum("\nIngrese el ID del producto:");
     prod = buscarProductoPorId(FILE_PRODUCTOS, id);
+    printf("%-5s %-20s %-20s %8s %14s %12s\n", "ID", "Nombre", "Descripcion", "Precio", "Categoria", "Stock");
+    printf("%-5d %-20s %-20s %10.2f %10s %10d\n", prod.id, prod.nombre, prod.descripcion, prod.precio, prod.categoria, prod.stock);
+    esperarTecla();
 }

@@ -876,6 +876,40 @@ int eliminarDetallePedido(const char *nombreArchivo, int id)
     return resultado;
 }
 
+int obtenerUltimoIdDetallePedido(const char *nombreArchivo)
+{
+    FILE *fp = fopen(nombreArchivo, "rb");
+    if (!fp)
+    {
+        return -1; // Si el archivo no existe, comenzamos desde 0
+    }
+
+    int numDetalles;
+    if (fread(&numDetalles, sizeof(int), 1, fp) != 1)
+    {
+        fclose(fp);
+        return -1;
+    }
+
+    if (numDetalles <= 0)
+    {
+        fclose(fp);
+        return -1;
+    }
+
+    fseek(fp, sizeof(int) + (numDetalles - 1) * sizeof(DetallePedido), SEEK_SET);
+
+    DetallePedido ultimoDetalle;
+    if (fread(&ultimoDetalle, sizeof(DetallePedido), 1, fp) != 1)
+    {
+        fclose(fp);
+        return -1;
+    }
+
+    fclose(fp);
+    return ultimoDetalle.id;
+}
+
 
 //
 // USUARIOS

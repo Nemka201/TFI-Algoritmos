@@ -7,6 +7,7 @@
 #include "pedido-servicio.h"
 #include "detalle-servicio.h"
 #include <locale.h>
+#include <windows.h>
 
 void mainMenu();
 void inputMenuProductos();
@@ -16,7 +17,11 @@ void inputMenuDetalle();
 
 int main()
 {
+<<<<<<< Updated upstream
     // inputMenuLogin();
+=======
+    //inputMenuLogin();
+>>>>>>> Stashed changes
     mainMenu();
     return 0;
 }
@@ -34,9 +39,7 @@ void mainMenu()
         printf("3. Gestion Productos\n");
         printf("4. Gestion Mesas\n");
         printf("5. Salir\n");
-        printf("Ingrese una opcion: ");
-        scanf("%d", &opcion);
-
+        int opcion = validarNum("Ingrese una opcion: ");
         switch (opcion)
         {
         case 1:
@@ -52,7 +55,10 @@ void mainMenu()
             inputMenuMesas();
             break;
         case 5:
+            system("cls");
             printf("Saliendo del programa...\n");
+            Sleep(2000);
+            exit(0);
             break;
         default:
             printf("Opcion invalida. Por favor, ingrese un numero entre 1 y 5.\n");
@@ -67,6 +73,7 @@ void inputMenuMesas()
 
     do
     {
+        
         system("cls");
         mostrarMenuMesas();
         scanf("%d", &opcion);
@@ -104,6 +111,7 @@ void inputMenuProductos()
 
     do
     {
+        
         system("cls");
         mostrarMenuProducto();
         scanf("%d", &opcion);
@@ -140,6 +148,7 @@ void inputMenuPedido()
     int opcion;
     do
     {
+        
         system("cls");
         mostrarMenuPedido();
         scanf("%d", &opcion);
@@ -185,6 +194,7 @@ void inputMenuDetalle()
     int opcion;
     do
     {
+        
         system("cls");
         mostrarMenuDetalle();
         scanf("%d", &opcion);

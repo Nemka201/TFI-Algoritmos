@@ -7,7 +7,7 @@
 
 #define FILE_PRODUCTOS "productos.bin"
 
-// Función para mostrar el menú
+// Funcion para mostrar el menu
 void mostrarMenuProducto()
 {
     printf("\n-------------------------------------\n");
@@ -23,21 +23,21 @@ void mostrarMenuProducto()
 int esCadenaVacia(const char *cadena) {
     while (*cadena) {
         if (!isspace((unsigned char)*cadena)) {
-            return 0; // Contiene al menos un carácter no vacío
+            return 0; // Contiene al menos un caracter no vacio
         }
         cadena++;
     }
-    return 1; // Solo tiene espacios o está vacía
+    return 1; // Solo tiene espacios o esta vacia
 }
-// Función para obtener entrada de texto válida
+// Funcion para obtener entrada de texto valida
 void obtenerEntradaValida(char *buffer, size_t size, const char *mensaje) {
     do {
         printf("%s", mensaje);
         fgets(buffer, size, stdin);
-        buffer[strcspn(buffer, "\n")] = '\0'; // Eliminar el salto de línea
-    } while (esCadenaVacia(buffer)); // Repetir si la cadena está vacía
+        buffer[strcspn(buffer, "\n")] = '\0'; // Eliminar el salto de linea
+    } while (esCadenaVacia(buffer)); // Repetir si la cadena esta vacia
 }
-// Función para validar números flotantes (precio)
+// Funcion para validar numeros flotantes (precio)
 float validarFloat(const char *mensaje) {
     float num;
     while (1) {
@@ -46,7 +46,7 @@ float validarFloat(const char *mensaje) {
             printf("Error: Ingrese un numero valido.\n");
             while (getchar() != '\n'); // Limpiar el buffer
         } else {
-            while (getchar() != '\n'); // Limpiar buffer después de un ingreso correcto
+            while (getchar() != '\n'); // Limpiar buffer despues de un ingreso correcto
             return num;
         }
     }
@@ -93,7 +93,7 @@ void modificarStockProductoMenu()
         printf("Nuevo stock para el producto %s: ", productoActual.nombre); 
         if (scanf("%d", &nuevaCantidad) != 1)
         {
-            printf("Error: Ingrese un número valido.\n");
+            printf("Error: Ingrese un numero valido.\n");
             while (getchar() != '\n')
                 ; // Limpiar el buffer de entrada
         }
@@ -124,7 +124,7 @@ void modificarProductoMenu()
         printf("Producto no encontrado\n");
         return;
     }
-    while (getchar() != '\n'); // Limpiar buffer después de scanf
+    while (getchar() != '\n'); // Limpiar buffer despues de scanf
     // Copiar los datos del producto actual al nuevo producto
     nuevoProducto = productoActual;
 
@@ -138,7 +138,7 @@ void modificarProductoMenu()
     // printf("Ingrese los nuevos datos del producto:\n");
     // printf("Nombre: ");
     // fgets(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), stdin);
-    // // Eliminar el salto de línea al final del nombre, si existe
+    // // Eliminar el salto de linea al final del nombre, si existe
     // nuevoProducto.nombre[strcspn(nuevoProducto.nombre, "\n")] = '\0';
 
     // printf("Descripcion: ");
@@ -151,7 +151,7 @@ void modificarProductoMenu()
     // printf("Stock: ");
     // scanf("%d", &nuevoProducto.stock);
 
-    // printf("Categoría: ");
+    // printf("Categoria: ");
     // fgets(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), stdin);
     // nuevoProducto.categoria[strcspn(nuevoProducto.categoria, "\n")] = '\0';
 
@@ -189,7 +189,7 @@ void agregarProductoMenu()
      
     // printf("Nombre: ");
     // fgets(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), stdin);
-    // // Eliminar el salto de línea al final del nombre, si existe
+    // // Eliminar el salto de linea al final del nombre, si existe
     // nuevoProducto.nombre[strcspn(nuevoProducto.nombre, "\n")] = '\0';
     // printf("Descripcion: ");
     // nuevoProducto.descripcion[strcspn(nuevoProducto.descripcion, "\n")] = '\0';
@@ -212,7 +212,7 @@ void agregarProductoMenu()
     // }
     // else
     // {
-    //     printf("Categoría inválida\n");
+    //     printf("Categoria invalida\n");
     //     return;
     // }
 

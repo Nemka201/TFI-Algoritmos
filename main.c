@@ -63,7 +63,7 @@ void mainMenu()
     } while (opcion != 5);
 }
 
-// Función selector del menu Mesas
+// Funcion selector del menu Mesas
 void inputMenuMesas()
 {
     int opcion;
@@ -96,12 +96,12 @@ void inputMenuMesas()
             printf("\nVolviendo...\n");
             break;
         default:
-            printf("Opción no valida. Intente de nuevo.\n");
+            printf("Opcion no valida. Intente de nuevo.\n");
         }
     } while (opcion != 6);
 }
 
-// Función selector del menu Productos
+// Funcion selector del menu Productos
 void inputMenuProductos()
 {
     int opcion;
@@ -134,12 +134,12 @@ void inputMenuProductos()
             printf("\nVolviendo...\n");
             break;
         default:
-            printf("Opción no valida. Intente de nuevo.\n");
+            printf("Opcion no valida. Intente de nuevo.\n");
         }
     } while (opcion != 6);
 }
 
-// Función selector del menu Pedidos
+// Funcion selector del menu Pedidos
 void inputMenuPedido()
 {
     int opcion;
@@ -182,11 +182,11 @@ void inputMenuPedido()
             break;
 
         default:
-            printf("Opción no válida. Intente de nuevo.\n");
+            printf("Opcion no valida. Intente de nuevo.\n");
         }
     } while (opcion != 7);
 }
-// Función selector del menu Pedidos
+// Funcion selector del menu Pedidos
 void inputMenuDetalle()
 {
     int opcion;
@@ -213,7 +213,7 @@ void inputMenuDetalle()
             printf("\nVolviendo...\n");
             break;
         default:
-            printf("Opción no válida. Intente de nuevo.\n");
+            printf("Opcion no valida. Intente de nuevo.\n");
         }
     } while (opcion != 4);
 }

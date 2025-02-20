@@ -4,7 +4,7 @@
 
 //  MESA //
 
-// Función para guardar un arreglo de mesas en un archivo binario
+// Funcion para guardar un arreglo de mesas en un archivo binario
 void guardarMesas(const char *nombreArchivo, Mesa *mesas, int numMesas)
 {
     FILE *archivo = fopen(nombreArchivo, "wb");
@@ -19,7 +19,7 @@ void guardarMesas(const char *nombreArchivo, Mesa *mesas, int numMesas)
     fclose(archivo);
 }
 
-// Función para cargar un arreglo de mesas desde un archivo binario
+// Funcion para cargar un arreglo de mesas desde un archivo binario
 Mesa *cargarMesas(const char *nombreArchivo, int *numMesas)
 {
     FILE *archivo = fopen(nombreArchivo, "rb");
@@ -51,7 +51,7 @@ Mesa *cargarMesas(const char *nombreArchivo, int *numMesas)
     return mesas;
 }
 
-// Función para buscar una mesa por su ID
+// Funcion para buscar una mesa por su ID
 Mesa buscarMesaPorId(const char *nombreArchivo, int id)
 {
     Mesa mesaEncontrada;
@@ -71,7 +71,7 @@ Mesa buscarMesaPorId(const char *nombreArchivo, int id)
     return mesaEncontrada;
 }
 
-// Función para agregar una nueva mesa
+// Funcion para agregar una nueva mesa
 int agregarMesa(const char *nombreArchivo, Mesa nuevaMesa)
 {
     int numMesas;
@@ -85,16 +85,16 @@ int agregarMesa(const char *nombreArchivo, Mesa nuevaMesa)
     guardarMesas(nombreArchivo, mesas, numMesas);
 
     free(mesas);
-    return 1; // Indicar éxito
+    return 1; // Indicar exito
 }
 
 
-// Función auxiliar para encontrar el índice libre en un arreglo
+// Funcion auxiliar para encontrar el indice libre en un arreglo
 int encontrarIndiceLibre(const char *nombreArchivo, int tamEstructura)
 {
     // Para simplificar, asumimos que los registros se almacenan de forma consecutiva
     // y que no hay huecos en el archivo.
-    // Si hay huecos, se necesitaría una lógica más compleja para encontrar el siguiente índice libre.
+    // Si hay huecos, se necesitaria una logica mas compleja para encontrar el siguiente indice libre.
 
     FILE *archivo = fopen(nombreArchivo, "rb");
     if (archivo == NULL)
@@ -148,7 +148,7 @@ int obtenerUltimoIdPedido(const char *nombreArchivo)
     if (fread(&numPedidos, sizeof(int), 1, fp) != 1)
     {
         fclose(fp);
-        return 0; // Si no se puede leer el número de pedidos, empezamos desde 0
+        return 0; // Si no se puede leer el numero de pedidos, empezamos desde 0
     }
 
     if (numPedidos <= 0)
@@ -157,14 +157,14 @@ int obtenerUltimoIdPedido(const char *nombreArchivo)
         return 0; // No hay pedidos registrados
     }
 
-    // Ir al último pedido
+    // Ir al ultimo pedido
     fseek(fp, sizeof(int) + (numPedidos - 1) * sizeof(Pedido), SEEK_SET);
 
     Pedido ultimoPedido;
     if (fread(&ultimoPedido, sizeof(Pedido), 1, fp) != 1)
     {
         fclose(fp);
-        return 0; // Si hay un error, asumimos que no hay pedidos válidos
+        return 0; // Si hay un error, asumimos que no hay pedidos validos
     }
 
     fclose(fp);
@@ -193,7 +193,7 @@ Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
         return NULL;
     }
 
-    // Verifica que se lea correctamente el número de pedidos
+    // Verifica que se lea correctamente el numero de pedidos
     if (fread(numPedidos, sizeof(int), 1, fp) != 1)  
     {
         perror("Error al leer la cantidad de pedidos o archivo vacio");
@@ -202,7 +202,7 @@ Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
         return NULL;
     }
 
-    // Si el número de pedidos es inválido, evitar malloc con tamaño 0 o negativo
+    // Si el numero de pedidos es invalido, evitar malloc con tamaño 0 o negativo
     if (*numPedidos <= 0)
     {
         // printf("Advertencia: Archivo sin pedidos.\n");
@@ -267,12 +267,12 @@ int agregarPedido(const char *nombreArchivo, Pedido nuevoPedido)
         numPedidos = 0;
     }
 
-    // Reservar más memoria para el nuevo pedido
+    // Reservar mas memoria para el nuevo pedido
     Pedido *nuevosPedidos = (Pedido *)realloc(pedidos, (numPedidos + 1) * sizeof(Pedido));
     if (!nuevosPedidos)
     {
         perror("Error al realocar memoria... ");
-        free(pedidos);  // Solo liberar si realloc falló
+        free(pedidos);  // Solo liberar si realloc fallo
         return 0;
     }
 
@@ -282,7 +282,7 @@ int agregarPedido(const char *nombreArchivo, Pedido nuevoPedido)
 
     // Guardar los pedidos en el archivo
     int resultado = guardarPedidos(nombreArchivo, nuevosPedidos, numPedidos);
-    free(nuevosPedidos); // Liberar memoria después de guardar
+    free(nuevosPedidos); // Liberar memoria despues de guardar
     return resultado;
 }
 int modificarPedido(const char *nombreArchivo, int id, Pedido nuevoPedido)
@@ -310,7 +310,7 @@ int eliminarPedido(const char *nombreArchivo, int id)
     Pedido pedidoEncontrado = buscarPedidoPorId(nombreArchivo, id);
     if (pedidoEncontrado.id == 0)
     {
-        printf("Error: No se encontró el pedido con ID %d.\n", id);
+        printf("Error: No se encontro el pedido con ID %d.\n", id);
         return 0;
     }
 
@@ -335,10 +335,10 @@ int eliminarPedido(const char *nombreArchivo, int id)
         return 0;
     }
 
-    fwrite(&numPedidos, sizeof(int), 1, aux); // Escribir temporalmente el número de pedidos
+    fwrite(&numPedidos, sizeof(int), 1, aux); // Escribir temporalmente el numero de pedidos
 
     Pedido pedido;
-    int pedidosRestantes = 0; // Contador de pedidos válidos
+    int pedidosRestantes = 0; // Contador de pedidos validos
 
     for (int i = 0; i < numPedidos; i++)
     {
@@ -358,14 +358,14 @@ int eliminarPedido(const char *nombreArchivo, int id)
     fclose(archivo);
     fclose(aux);
 
-    if (pedidosRestantes == numPedidos) // No se eliminó nada
+    if (pedidosRestantes == numPedidos) // No se elimino nada
     {
         remove("aux.bin");
-        printf("Error: No se encontró el pedido con ID %d.\n", id);
+        printf("Error: No se encontro el pedido con ID %d.\n", id);
         return 0;
     }
 
-    // Actualizar el número de pedidos en el archivo auxiliar
+    // Actualizar el numero de pedidos en el archivo auxiliar
     archivo = fopen("aux.bin", "r+b");
     if (archivo)
     {
@@ -391,7 +391,7 @@ int eliminarPedido(const char *nombreArchivo, int id)
         return NULL;
     }
 
-    // Contar cuántos pedidos pertenecen a la mesa indicada
+    // Contar cuantos pedidos pertenecen a la mesa indicada
     int contador = 0;
     for (int i = 0; i < totalPedidos; i++)
     {
@@ -439,7 +439,7 @@ float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
 
     if (!detalles || totalDetalles == 0)
     {
-        printf("No hay detalles de pedidos registrados o error al cargar el archivo.\n");
+        printf("No hay detalles de pedidos registrados.\n");
         return 0.0f;
     }
 
@@ -471,7 +471,7 @@ float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
 
 // PRODUCTOS //
 
-// Función para guardar productos en un archivo binario
+// Funcion para guardar productos en un archivo binario
 int guardarProductos(const char *nombreArchivo, Producto *productos, int numProductos)
 {
     FILE *fp = fopen(nombreArchivo, "wb");
@@ -481,7 +481,7 @@ int guardarProductos(const char *nombreArchivo, Producto *productos, int numProd
         return 0; // Indicar error
     }
 
-    // Escribir un encabezado con el número de productos para facilitar la carga posterior
+    // Escribir un encabezado con el numero de productos para facilitar la carga posterior
     if (fwrite(&numProductos, sizeof(int), 1, fp) != 1)
     {
         fclose(fp);
@@ -495,10 +495,10 @@ int guardarProductos(const char *nombreArchivo, Producto *productos, int numProd
     }
 
     fclose(fp);
-    return 1; // Indicar éxito
+    return 1; // Indicar exito
 }
 
-// Función para cargar productos desde un archivo binario
+// Funcion para cargar productos desde un archivo binario
 Producto *cargarProductos(const char *nombreArchivo, int *numProductos)
 {
     FILE *fp = fopen(nombreArchivo, "rb");
@@ -508,7 +508,7 @@ Producto *cargarProductos(const char *nombreArchivo, int *numProductos)
         return NULL;
     }
 
-    // Leer el número de productos del encabezado
+    // Leer el numero de productos del encabezado
     fread(numProductos, sizeof(int), 1, fp);
 
     Producto *productos = (Producto *)malloc(*numProductos * sizeof(Producto));
@@ -517,13 +517,13 @@ Producto *cargarProductos(const char *nombreArchivo, int *numProductos)
     return productos;
 }
 
-// Función para buscar un producto por su ID
+// Funcion para buscar un producto por su ID
 Producto buscarProductoPorId(const char *nombreArchivo, int id)
 {
     int numProductos;
     Producto *productos = cargarProductos(nombreArchivo, &numProductos);
 
-    // Búsqueda secuencial (puedes implementar búsqueda binaria si los productos están ordenados)
+    // Busqueda secuencial (puedes implementar busqueda binaria si los productos estan ordenados)
     for (int i = 0; i < numProductos; i++)
     {
         if (productos[i].id == id)
@@ -535,11 +535,11 @@ Producto buscarProductoPorId(const char *nombreArchivo, int id)
     }
 
     free(productos);
-    Producto productoVacio = {0}; // Crear un producto vacío para indicar que no se encontró
+    Producto productoVacio = {0}; // Crear un producto vacio para indicar que no se encontro
     return productoVacio;
 }
 
-// Función para agregar un nuevo producto
+// Funcion para agregar un nuevo producto
 int agregarProducto(const char *nombreArchivo, Producto nuevoProducto)
 {
     int numProductos = 0;
@@ -568,10 +568,10 @@ int agregarProducto(const char *nombreArchivo, Producto nuevoProducto)
     }
 
     free(productos);
-    return 1; // Indicar éxito
+    return 1; // Indicar exito
 }
 
-// Función para modificar un producto existente
+// Funcion para modificar un producto existente
 int modificarProducto(const char *nombreArchivo, int id, Producto nuevoProducto)
 {
     int numProductos;
@@ -584,7 +584,7 @@ int modificarProducto(const char *nombreArchivo, int id, Producto nuevoProducto)
             productos[i] = nuevoProducto;
             guardarProductos(nombreArchivo, productos, numProductos);
             free(productos);
-            return 1; // Modificación exitosa
+            return 1; // Modificacion exitosa
         }
     }
 
@@ -592,7 +592,7 @@ int modificarProducto(const char *nombreArchivo, int id, Producto nuevoProducto)
     return 0; // Producto no encontrado
 }
 
-// Función para eliminar un producto
+// Funcion para eliminar un producto
 int eliminarProducto(const char *nombreArchivo, int id)
 {
     int numProductos;
@@ -623,14 +623,14 @@ int eliminarProducto(const char *nombreArchivo, int id)
         guardarProductos(nombreArchivo, productos, numProductos);
 
         free(productos);
-        return 1; // Eliminación exitosa
+        return 1; // Eliminacion exitosa
     }
 
     free(productos);
     return 0; // Producto no encontrado
 }
 
-// Función para buscar productos por categoría
+// Funcion para buscar productos por categoria
 Producto *buscarProductosPorCategoria(const char *nombreArchivo, const char *categoria)
 {
     int numProductos;
@@ -747,7 +747,7 @@ DetallePedido *buscarDetallesPorPedido(const char *nombreArchivo, int idPedido, 
         return NULL;
     }
 
-    // Contar cuántos detalles coinciden
+    // Contar cuantos detalles coinciden
     *numResultados = 0;
     for (int i = 0; i < numDetalles; i++)
     {
@@ -915,7 +915,7 @@ int obtenerUltimoIdDetallePedido(const char *nombreArchivo)
 // USUARIOS
 //
 
-// Función para cargar los usuarios desde el archivo binario
+// Funcion para cargar los usuarios desde el archivo binario
 int cargarUsuarios(Usuario usuarios[], int maxUsuarios) {
     FILE *file = fopen("Usuarios.dat", "rb");
     if (!file) {
@@ -926,7 +926,7 @@ int cargarUsuarios(Usuario usuarios[], int maxUsuarios) {
     return cantidadUsuarios;
 }
 
-// Función para guardar los usuarios en el archivo binario
+// Funcion para guardar los usuarios en el archivo binario
 void guardarUsuarios(Usuario usuarios[], int cantidadUsuarios) {
     FILE *file = fopen("Usuarios.dat", "wb");
     if (!file) {

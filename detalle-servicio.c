@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "detalle-servicio.h"
 
-// Función para mostrar el menú
+// Funcion para mostrar el menu
 void mostrarMenuDetalle()
 {
     printf("\n-------------------------------------\n");
@@ -17,7 +17,7 @@ void mostrarMenuDetalle()
     printf("Seleccione una opcion: ");
 }
 
-// Nueva función para agregar un detalle de pedido con entrada manual
+// Nueva funcion para agregar un detalle de pedido con entrada manual
 int agregarDetallePedidoService()
 {
     int pedidoId, productoId, cantidad;
@@ -53,7 +53,7 @@ int agregarDetallePedidoService()
             return 0;
         }
 
-        // Obtener el último ID registrado y calcular el nuevo
+        // Obtener el ultimo ID registrado y calcular el nuevo
         int ultimoId = obtenerUltimoIdDetallePedido(FILE_DETALLES);
         int nuevoId = (ultimoId == -1) ? 0 : ultimoId + 1;
 
@@ -96,7 +96,7 @@ int agregarDetallePedidoService()
     }
 }
 
-// Función para mostrar los detalles de un pedido
+// Funcion para mostrar los detalles de un pedido
 void mostrarDetallesPedido()
 {
     //mostrarPedidosConTotales(); // Muestra los pedidos con totales antes de pedir el ID

@@ -75,7 +75,6 @@ void mostrarTodosLosProductos()
                productos[i].stock);
     }
     free(productos);
-    esperarTecla();
 }
 void modificarStockProductoMenu()
 {

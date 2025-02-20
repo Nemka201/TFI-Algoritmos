@@ -117,6 +117,7 @@ void inputMenuProductos()
         {
         case 1:
             mostrarTodosLosProductos();
+            esperarTecla();
             break;
         case 2:
             modificarProductoMenu();

@@ -185,7 +185,6 @@ int guardarPedidos(const char *nombreArchivo, Pedido *pedidos, int numPedidos)
 }
 Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
 {
-    crearArchivoPedidos();
     FILE *fp = fopen(nombreArchivo, "rb");
     if (!fp)
     {
@@ -197,7 +196,7 @@ Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
     // Verifica que se lea correctamente el número de pedidos
     if (fread(numPedidos, sizeof(int), 1, fp) != 1)  
     {
-        perror("Error al leer la cantidad de pedidos o archivo vacío");
+        perror("Error al leer la cantidad de pedidos o archivo vacio");
         fclose(fp);
         *numPedidos = 0;
         return NULL;
@@ -206,7 +205,7 @@ Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
     // Si el número de pedidos es inválido, evitar malloc con tamaño 0 o negativo
     if (*numPedidos <= 0)
     {
-        printf("Advertencia: Archivo sin pedidos válidos.\n");
+        // printf("Advertencia: Archivo sin pedidos.\n");
         fclose(fp);
         return NULL;
     }
@@ -232,10 +231,8 @@ Pedido *cargarPedidos(const char *nombreArchivo, int *numPedidos)
     fclose(fp);
     return pedidos;
 }
-
 Pedido buscarPedidoPorId(const char *nombreArchivo, int id)
 {
-    crearArchivoPedidos();
     int numPedidos;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
     Pedido pedidoEncontrado = {0};
@@ -255,7 +252,6 @@ Pedido buscarPedidoPorId(const char *nombreArchivo, int id)
 }
 int agregarPedido(const char *nombreArchivo, Pedido nuevoPedido)
 {
-    crearArchivoPedidos();
     int numPedidos = 0;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
 
@@ -289,11 +285,8 @@ int agregarPedido(const char *nombreArchivo, Pedido nuevoPedido)
     free(nuevosPedidos); // Liberar memoria después de guardar
     return resultado;
 }
-
-
 int modificarPedido(const char *nombreArchivo, int id, Pedido nuevoPedido)
 {
-    crearArchivoPedidos();
     int numPedidos;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &numPedidos);
     if (!pedidos)
@@ -311,10 +304,8 @@ int modificarPedido(const char *nombreArchivo, int id, Pedido nuevoPedido)
     free(pedidos);
     return 0;
 }
-
 int eliminarPedido(const char *nombreArchivo, int id)
 {
-    crearArchivoPedidos();
     // Verificar si el pedido existe antes de intentar eliminarlo
     Pedido pedidoEncontrado = buscarPedidoPorId(nombreArchivo, id);
     if (pedidoEncontrado.id == 0)
@@ -388,17 +379,14 @@ int eliminarPedido(const char *nombreArchivo, int id)
     printf("Pedido con ID %d eliminado correctamente.\n", id);
     return 1;
 }
-
-
  Pedido *buscarPedidosPorMesa(const char *nombreArchivo, int idMesa, int *numPedidos)
 {
-    crearArchivoPedidos();
     int totalPedidos;
     Pedido *pedidos = cargarPedidos(nombreArchivo, &totalPedidos);
 
     if (!pedidos || totalPedidos == 0)
     {
-        printf("No hay pedidos registrados o error al cargar.\n");
+        printf("No hay pedidos registrados.\n");
         *numPedidos = 0;
         return NULL;
     }
@@ -444,10 +432,8 @@ int eliminarPedido(const char *nombreArchivo, int id)
     *numPedidos = contador;
     return pedidosMesa;
 }
-
 float calcularTotalPedido(const char *nombreArchivoDetalles, int idPedido)
 {
-    crearArchivoPedidos();
     int totalDetalles;
     DetallePedido *detalles = cargarDetallesPedidos(nombreArchivoDetalles, &totalDetalles);
 

@@ -43,7 +43,7 @@ float validarFloat(const char *mensaje) {
     while (1) {
         printf("%s", mensaje);
         if (scanf("%f", &num) != 1 || num < 0) {
-            printf("Error: Ingrese un número válido.\n");
+            printf("Error: Ingrese un numero valido.\n");
             while (getchar() != '\n'); // Limpiar el buffer
         } else {
             while (getchar() != '\n'); // Limpiar buffer después de un ingreso correcto
@@ -93,7 +93,7 @@ void modificarStockProductoMenu()
         printf("Nuevo stock para el producto %s: ", productoActual.nombre); 
         if (scanf("%d", &nuevaCantidad) != 1)
         {
-            printf("Error: Ingrese un número válido.\n");
+            printf("Error: Ingrese un número valido.\n");
             while (getchar() != '\n')
                 ; // Limpiar el buffer de entrada
         }
@@ -129,10 +129,10 @@ void modificarProductoMenu()
     nuevoProducto = productoActual;
 
     obtenerEntradaValida(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), "Ingrese el nuevo nombre del producto: ");
-    obtenerEntradaValida(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), "Ingrese la nueva descripción: ");
+    obtenerEntradaValida(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), "Ingrese la nueva descripcion: ");
     nuevoProducto.precio = validarFloat("Ingrese el nuevo precio del producto: ");
     nuevoProducto.stock = validarNum("Ingrese el nuevo stock del producto: ");
-    obtenerEntradaValida(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), "Ingrese la nueva categoría: ");
+    obtenerEntradaValida(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), "Ingrese la nueva categoria: ");
 
 
     // printf("Ingrese los nuevos datos del producto:\n");
@@ -185,7 +185,7 @@ void agregarProductoMenu()
     obtenerEntradaValida(nuevoProducto.descripcion, sizeof(nuevoProducto.descripcion), "Descripcion: ");
     nuevoProducto.precio = validarFloat("Ingrese el nuevo precio del producto: ");
     nuevoProducto.stock = validarNum("Ingrese el nuevo stock del producto: ");
-    obtenerEntradaValida(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), "Ingrese la nueva categoría: ");
+    obtenerEntradaValida(nuevoProducto.categoria, sizeof(nuevoProducto.categoria), "Ingrese la nueva categoria: ");
      
     // printf("Nombre: ");
     // fgets(nuevoProducto.nombre, sizeof(nuevoProducto.nombre), stdin);

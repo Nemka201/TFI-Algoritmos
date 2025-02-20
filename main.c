@@ -173,8 +173,7 @@ void inputMenuPedido()
             break;
 
         case 6:
-            bool aux;
-            aux = mostrarPedidosConTotales();
+            mostrarPedidosConTotales();
             break;
 
         case 7:

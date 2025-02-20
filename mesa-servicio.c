@@ -6,7 +6,7 @@
 #include <ctype.h>
 #define FILE_MESAS "mesas.bin"
 
-// Función para reservar una mesa
+// Funcion para reservar una mesa
 int reservarMesa(int idMesa) {
     int numMesas;
     Mesa* mesas = cargarMesas(FILE_MESAS, &numMesas);
@@ -28,10 +28,10 @@ int reservarMesa(int idMesa) {
     }
 
     free(mesas);
-    printf("Error: No se encontró la mesa %d.\n", idMesa);
+    printf("Error: No se encontro la mesa %d.\n", idMesa);
     return 0; // Mesa no encontrada
 }
-// Función para liberar una mesa
+// Funcion para liberar una mesa
 int liberarMesa(int idMesa) {
     int numMesas;
     Mesa* mesas = cargarMesas(FILE_MESAS, &numMesas);
@@ -43,7 +43,7 @@ int liberarMesa(int idMesa) {
                 guardarMesas(FILE_MESAS, mesas, numMesas); // Guardar cambios
                 free(mesas);
                 printf("Mesa %d liberada con exito.\n", idMesa);
-                return 1; // Liberación exitosa
+                return 1; // Liberacion exitosa
             } else {
                 free(mesas);
                 printf("La mesa %d no esta reservada.\n", idMesa);
@@ -53,10 +53,10 @@ int liberarMesa(int idMesa) {
     }
 
     free(mesas);
-    printf("Error: No se encontró la mesa %d.\n", idMesa);
+    printf("Error: No se encontro la mesa %d.\n", idMesa);
     return 0; // Mesa no encontrada
 }
-// Función para mostrar la disponibilidad de las mesas
+// Funcion para mostrar la disponibilidad de las mesas
 void mostrarDisponibilidadMesas() {
     int numMesas;
     Mesa* mesas = cargarMesas(FILE_MESAS, &numMesas);
@@ -70,7 +70,7 @@ void mostrarDisponibilidadMesas() {
 
     free(mesas); // Liberar la memoria asignada
 }
-// Función para mostrar el menú
+// Funcion para mostrar el menu
 void mostrarMenuMesas() {
     printf("\n--- Menu de Gestion de Mesas ---\n");
     printf("1. Mostrar disponibilidad de mesas\n");
@@ -81,23 +81,23 @@ void mostrarMenuMesas() {
     printf("6. Volver\n");
     printf("Seleccione una opcion: ");
 }
-// Función para mostrar la disponibilidad de las mesas
+// Funcion para mostrar la disponibilidad de las mesas
 void accionMostrarDisponibilidad() {
     mostrarDisponibilidadMesas();
 }
-// Función para reservar una mesa
+// Funcion para reservar una mesa
 void accionReservarMesa() {
     int idMesa;
     idMesa = validarNum("Ingrese el ID de la mesa a reservar: ");
     reservarMesa(idMesa);
 }
-// Función para liberar una mesa
+// Funcion para liberar una mesa
 void accionLiberarMesa() {
     int idMesa;
     idMesa = validarNum("Ingrese el ID de la mesa a liberar: ");
     liberarMesa(idMesa);
 }
-// Función para agregar una nueva mesa
+// Funcion para agregar una nueva mesa
 void accionAgregarMesa() {
     Mesa nuevaMesa;
     printf("Ingrese los datos de la nueva mesa:\n");
@@ -111,7 +111,7 @@ void accionAgregarMesa() {
     int opcion;
     while (1) {
         if (scanf("%d", &opcion) != 1) {
-            printf("Error: Ingrese un número válido.\n");
+            printf("Error: Ingrese un numero valido.\n");
             printf("Seleccione una opcion: ");
             while (getchar() != '\n'); // Limpiar el buffer de entrada
         } else {
@@ -125,10 +125,10 @@ void accionAgregarMesa() {
         case 2: strcpy(nuevaMesa.ubicacion, "Planta-Baja"); break;
         case 3: strcpy(nuevaMesa.ubicacion, "Planta-Alta"); break;
         default: 
-            printf("Opcion inválida. Se asignara 'Planta-Baja' por defecto.\n");
+            printf("Opcion invalida. Se asignara 'Planta-Baja' por defecto.\n");
             strcpy(nuevaMesa.ubicacion, "Planta-Baja");
     }
-    nuevaMesa.disponible = true; // Por defecto, la mesa está disponible
+    nuevaMesa.disponible = true; // Por defecto, la mesa esta disponible
 
     if (agregarMesa(FILE_MESAS, nuevaMesa)) {
         printf("Mesa agregada con exito.\n");
@@ -138,7 +138,7 @@ void accionAgregarMesa() {
         esperarTecla();
     }
 }
-// Función para buscar una mesa por ID
+// Funcion para buscar una mesa por ID
 void accionBuscarMesaPorId() {
     int idMesa;
     idMesa=validarNum("Ingrese el ID de la mesa a buscar: ");

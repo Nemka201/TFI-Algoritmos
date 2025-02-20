@@ -14,6 +14,6 @@ void modificarPedidoMenu();
 void eliminarPedidoMenu();
 void buscarPedidosPorMesaMenu();
 void calcularTotalPedidoMenu();
-void mostrarPedidosConTotales();
+bool mostrarPedidosConTotales();
 
 #endif

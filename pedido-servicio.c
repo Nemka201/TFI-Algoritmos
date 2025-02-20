@@ -243,7 +243,7 @@ void calcularTotalPedidoMenu()
         esperarTecla();
     }
 }
-void mostrarPedidosConTotales()
+bool mostrarPedidosConTotales()
 {
     int numPedidos;
     Pedido *pedidos = cargarPedidos(FILE_PEDIDO, &numPedidos);
@@ -251,7 +251,8 @@ void mostrarPedidosConTotales()
     if (!pedidos || numPedidos == 0)
     {
         printf("No hay pedidos registrados.\n");
-        return;
+        esperarTecla();
+        return false;
     }
 
     printf("\nListado de Pedidos con Totales:\n");
@@ -267,5 +268,6 @@ void mostrarPedidosConTotales()
         printf("-------------------------------------------------\n");
     }
     free(pedidos);
+    return true;
     esperarTecla();
 }

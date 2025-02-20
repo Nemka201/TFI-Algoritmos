@@ -8,6 +8,7 @@
 #include "detalle-servicio.h"
 #include <locale.h>
 #include <windows.h>
+#include <stdbool.h>
 
 void mainMenu();
 void inputMenuProductos();
@@ -17,11 +18,7 @@ void inputMenuDetalle();
 
 int main()
 {
-<<<<<<< Updated upstream
-    // inputMenuLogin();
-=======
     //inputMenuLogin();
->>>>>>> Stashed changes
     mainMenu();
     return 0;
 }
@@ -176,7 +173,8 @@ void inputMenuPedido()
             break;
 
         case 6:
-            mostrarPedidosConTotales();
+            bool aux;
+            aux = mostrarPedidosConTotales();
             break;
 
         case 7:

@@ -2,13 +2,28 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Compilar recursos",
+            "type": "shell",
+            "command": "windres",
+            "args": [
+                "${workspaceFolder}/recursos/resources.rc",  
+                "-O", "coff",  
+                "-o", "${workspaceFolder}/recursos/resources.o"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
             "label": "Compilar y ejecutar C++",
             "type": "shell",
             "command": "g++",
             "args": [
                 "-g",
                 "-o",
-                "${workspaceFolder}/bar.exe",  // Cambia el nombre del ejecutable a bar.exe
+                "${workspaceFolder}/bar.exe",
                 "${workspaceFolder}/main.c",
                 "${workspaceFolder}/utilities.c",
                 "${workspaceFolder}/repositories/detalle-repositorio.c",
@@ -21,6 +36,7 @@
                 "${workspaceFolder}/services/detalle-servicio.c",
                 "${workspaceFolder}/services/pedido-servicio.c",
                 "${workspaceFolder}/services/producto-servicio.c",
+                "${workspaceFolder}/recursos/resources.o",  // Agrega los recursos compilados
                 "-I${workspaceFolder}/repositories",
                 "-I${workspaceFolder}/services"
             ],
@@ -29,26 +45,26 @@
                 "isDefault": true
             },
             "problemMatcher": ["$gcc"],
-            "detail": "Compilar el programa C++",
+            "dependsOn": ["Compilar recursos"],  // Asegura que primero se compilen los recursos
             "presentation": {
-                "reveal": "always"  // Muestra la terminal al ejecutar la tarea
+                "reveal": "always"
             },
             "runOptions": {
-                "runOn": "default"  // Ejecuta la tarea por defecto
+                "runOn": "default"
             }
         },
         {
             "label": "Ejecutar bar.exe",
             "type": "shell",
-            "command": "${workspaceFolder}/bar.exe",  // Ejecuta bar.exe
+            "command": "${workspaceFolder}/bar.exe",
             "problemMatcher": [],
             "group": {
                 "kind": "none",
                 "isDefault": true
             },
-            "dependsOn": ["Compilar y ejecutar C++"],  // Depende de la tarea de compilación
+            "dependsOn": ["Compilar y ejecutar C++"],
             "presentation": {
-                "reveal": "always"  // Muestra la terminal al ejecutar la tarea
+                "reveal": "always"
             }
         }
     ]

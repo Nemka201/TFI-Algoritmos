@@ -73,6 +73,7 @@
     "login-repositorio.h": "c",
     "pedido-repositorio.h": "c",
     "mesa-repositorio.h": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "detalle-repositorio.h": "c"
   }
 }

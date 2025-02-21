@@ -111,6 +111,7 @@ void mostrarDetallesPedido()
         if (!detalles || numResultados == 0)
         {
             printf("No se encontraron detalles para el pedido ID: %d\n", pedidoId);
+            esperarTecla();
             return;
         }
 

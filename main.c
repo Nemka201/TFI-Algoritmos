@@ -18,7 +18,7 @@ void inputMenuDetalle();
 
 int main()
 {
-    inputMenuLogin();
+    //inputMenuLogin();
     mainMenu();
     return 0;
 }
@@ -54,7 +54,7 @@ void mainMenu()
         case 5:
             system("cls");
             printf("Saliendo del programa...\n");
-            Sleep(2000);
+            Sleep(1000);
             exit(0);
             break;
         default:

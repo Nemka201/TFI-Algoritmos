@@ -181,7 +181,6 @@ void eliminarPedidoMenu()
     id=validarNum("Ingrese el ID del pedido a eliminar: ");
     if (eliminarPedido(FILE_PEDIDO, id))
     {
-        printf("Pedido eliminado correctamente.\n");
         esperarTecla();
     }
     else

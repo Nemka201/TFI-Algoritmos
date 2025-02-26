@@ -73,7 +73,7 @@ void inputMenuMesas()
         
         system("cls");
         mostrarMenuMesas();
-        scanf("%d", &opcion);
+        opcion = validarNum("Ingrese una opcion: ");
 
         switch (opcion)
         {
@@ -111,7 +111,7 @@ void inputMenuProductos()
         
         system("cls");
         mostrarMenuProducto();
-        scanf("%d", &opcion);
+        opcion = validarNum("Ingrese una opcion: ");
 
         switch (opcion)
         {
@@ -149,7 +149,7 @@ void inputMenuPedido()
         
         system("cls");
         mostrarMenuPedido();
-        scanf("%d", &opcion);
+        opcion = validarNum("Ingrese una opcion: ");
 
         switch (opcion)
         {
@@ -196,7 +196,7 @@ void inputMenuDetalle()
         
         system("cls");
         mostrarMenuDetalle();
-        scanf("%d", &opcion);
+        opcion = validarNum("Ingrese una opcion: ");
 
         switch (opcion)
         {

@@ -36,7 +36,7 @@
                 "${workspaceFolder}/services/detalle-servicio.c",
                 "${workspaceFolder}/services/pedido-servicio.c",
                 "${workspaceFolder}/services/producto-servicio.c",
-                "${workspaceFolder}/recursos/resources.o",  // Agrega los recursos compilados
+                "${workspaceFolder}/recursos/resources.o",
                 "-I${workspaceFolder}/repositories",
                 "-I${workspaceFolder}/services"
             ],
@@ -45,7 +45,7 @@
                 "isDefault": true
             },
             "problemMatcher": ["$gcc"],
-            "dependsOn": ["Compilar recursos"],  // Asegura que primero se compilen los recursos
+            "dependsOn": ["Compilar recursos"],
             "presentation": {
                 "reveal": "always"
             },

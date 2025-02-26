@@ -264,6 +264,8 @@ int eliminarPedido(const char *nombreArchivo, int id)
     remove(nombreArchivo);
     rename("aux.bin", nombreArchivo);
 
+    
+    printf("\n");
     printf("Pedido con ID %d eliminado correctamente.\n", id);
     return 1;
 }

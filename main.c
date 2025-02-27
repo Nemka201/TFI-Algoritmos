@@ -18,7 +18,7 @@ void inputMenuDetalle();
 
 int main()
 {
-    //inputMenuLogin();
+    inputMenuLogin();
     mainMenu();
     return 0;
 }
@@ -26,10 +26,15 @@ int main()
 void mainMenu()
 {
     int opcion;
-
+    // printf("      ( (  \n");
+    // printf("       ) ) \n");
+    // printf("    ........  \n");
+    // printf("    |      |] \n");
+    // printf("    \\      /  \n");
+    // printf("     `----'   \n");
     do
     {
-        system("cls");
+         system("cls");
         printf("\nMenu Principal\n");
         printf("1. Ventas \n");
         printf("2. Pedidos\n");
@@ -119,23 +124,12 @@ void inputMenuProductos()
             mostrarTodosLosProductos();
             esperarTecla();
             break;
-        case 2:
-            modificarProductoMenu();
-            break;
-        case 3:
-            modificarStockProductoMenu();
-            break;
-        case 4:
-            agregarProductoMenu();
-            break;
-        case 5:
-            buscarProductoMenu();
-            break;
-        case 6:
-            printf("\nVolviendo...\n");
-            break;
-        default:
-            printf("Opcion no valida. Intente de nuevo.\n");
+        case 2: modificarProductoMenu(); break;
+        case 3: modificarStockProductoMenu(); break;
+        case 4: agregarProductoMenu(); break;
+        case 5: buscarProductoMenu(); break;
+        case 6: printf("\nVolviendo...\n"); break;
+        default: printf("Opcion no valida. Intente de nuevo.\n");
         }
     } while (opcion != 6);
 }
@@ -146,44 +140,22 @@ void inputMenuPedido()
     int opcion;
     do
     {
-        
         system("cls");
         mostrarMenuPedido();
         opcion = validarNum("Ingrese una opcion: ");
-
         switch (opcion)
         {
-        case 1:
-            agregarPedidoMenu();
-            break;
-
-        case 2:
-            buscarPedidoMenu();
-            break;
-
-        case 3:
-            modificarPedidoMenu();
-            break;
-
-        case 4:
-            eliminarPedidoMenu();
-            break;
-
-        case 5:
-            buscarPedidosPorMesaMenu();
-            break;
-
+        case 1: agregarPedidoMenu(); break;
+        case 2: buscarPedidoMenu(); break;
+        case 3: modificarPedidoMenu(); break;
+        case 4: eliminarPedidoMenu(); break;
+        case 5: buscarPedidosPorMesaMenu(); break;
         case 6:
             bool aux;
             aux = mostrarPedidosConTotales();
             break;
-
-        case 7:
-            printf("\nVolviendo...\n");
-            break;
-
-        default:
-            printf("Opcion no valida. Intente de nuevo.\n");
+        case 7: printf("\nVolviendo...\n"); break;
+        default: printf("Opcion no valida. Intente de nuevo.\n");
         }
     } while (opcion != 7);
 }
@@ -193,28 +165,16 @@ void inputMenuDetalle()
     int opcion;
     do
     {
-        
         system("cls");
         mostrarMenuDetalle();
         opcion = validarNum("Ingrese una opcion: ");
-
         switch (opcion)
         {
-        case 1:
-            agregarDetallePedidoService();
-            break;
-
-        case 2:
-            calcularTotalPedidoMenu();
-            break;
-        case 3:
-            mostrarDetallesPedido();
-            break;
-        case 4:
-            printf("\nVolviendo...\n");
-            break;
-        default:
-            printf("Opcion no valida. Intente de nuevo.\n");
+        case 1: agregarDetallePedidoService(); break;
+        case 2: calcularTotalPedidoMenu(); break;
+        case 3: mostrarDetallesPedido(); break;
+        case 4: printf("\nVolviendo...\n"); break;
+        default: printf("Opcion no valida. Intente de nuevo.\n");
         }
     } while (opcion != 4);
 }

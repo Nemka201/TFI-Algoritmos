@@ -1,4 +1,5 @@
 #include "login-servicio.h"
+#include <windows.h>
 
 #define MAX_USUARIOS 100
 
@@ -50,6 +51,11 @@ int iniciarSesion(Usuario usuarios[], int cantidadUsuarios) {
         if (strcmp(usuarios[i].username, nombreUsuario) == 0 &&
             strcmp(usuarios[i].password, contrasena) == 0) {
             printf("Inicio de sesion exitoso.\n");
+            for (int i = 0; i < 6; i++) {
+            mostrarTaza(i, i/2);  // Cada 2 ciclos aumenta un punto
+            Sleep(500);  // 500 ms (medio segundo por ciclo)
+        }
+
             return 1;
         }
     }
@@ -189,4 +195,29 @@ void registrarUsuario(Usuario usuarios[], int* cantidadUsuarios, int maxUsuarios
     (*cantidadUsuarios)++;
 
     printf("Usuario registrado exitosamente.\n");
+}
+
+void mostrarTaza(int frame, int puntos) {
+    system("cls");  // Limpiar pantalla en Windows
+
+    // Alternar la posición del vapor cada ciclo
+    if (frame % 2 == 0) {
+        printf("      ( (  \n");
+        printf("       ) ) \n");
+    } else {
+        printf("       ) ) \n");
+        printf("      ( (  \n");
+    }
+
+    printf("    ........  \n");
+    printf("    |      |] \n");
+    printf("    \\      /  \n");
+    printf("     `----'   \n");
+
+    // Imprimir "Bienvenido" con puntos animados
+    printf("\nBienvenido");
+    for (int i = 0; i < puntos; i++) {
+        printf(".");
+    }
+    printf("\n");
 }

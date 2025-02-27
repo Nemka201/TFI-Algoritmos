@@ -16,5 +16,6 @@ int validarContraseña(const char* contrasena);
 void registrarUsuario(Usuario usuarios[], int* cantidadUsuarios, int maxUsuarios);
 void mostrarMenuLogin();
 void inputMenuLogin();
+void mostrarTaza(int frame, int puntos);
 
 #endif
